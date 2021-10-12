@@ -4,12 +4,13 @@ import re
 from typing import Tuple, Generator
 from sys import argv
 
+#arguments check
 if len(argv) < 3:
     print(argv[0], "(filename) (query)")
     exit(-1)
 
 
-# %%
+# create document reading pattern
 doc_read_pattern = re.compile("<doc><docno>([^<]*)</docno>([^<]*)</doc>")
 
 
@@ -20,14 +21,12 @@ def read_doc(text: str) -> Tuple[str, str]:
     return matcher.group(1), matcher.group(2)
 
 
-# %%
+# open file and read documents
 with open(argv[1], "r") as f:
     lines = f.readlines()
 
 
-# %%
-
-
+# locate end parenthesis of boolean expression
 def locate_end_parenthesis(exp: List[str], start: int) -> int:
     deep = 0
     for i in range(start, len(exp)):
@@ -168,7 +167,7 @@ for i in range(len(lines)):
 
         wl = index.fetch_or_create_object(word)
         wl.df += 1
-        wl.tf[docno] = 1
+        wl.tf[docno] += 1
 
 
 # %%

@@ -81,7 +81,7 @@ for i in range(len(lines)):
 
         wl = index.fetch_or_create_object(word)
         wl.df += 1
-        wl.tf[docno] = 1
+        wl.tf[docno] += 1
 
 
 # %%
