@@ -1,5 +1,5 @@
 import re
-from typing import Tuple, Generator
+from typing import List, Tuple, Generator
 from sys import argv
 from os import listdir
 from os.path import isfile, join
@@ -38,31 +38,38 @@ def read_doc(text: str) -> str:
 supply_docs_doc_read_pattern = re.compile("<doc><docno>([^<]*)</docno>")
 supply_docs_doc_read_end_pattern = re.compile("</doc>")
 
-def supply_docs(file_name: str) -> Generator[Tuple[str, str], None, None]:
-    with open(file_name) as f:
-        while True: 
-            line = f.readline()
-            if line == '':
-                break
-            match = supply_docs_doc_read_pattern.search(line)
-            if not match:
-                continue
-
-            docno = match.group(1)
-            line = line[match.end():]
-            text = ""
-            while True:
-                match = supply_docs_doc_read_end_pattern.search(line)
-                if match:
-                    text += line[:match.start()]
-                    yield docno, text
-                    break
-                else:
-                    text += line
-
+def supply_docs(file_names: List[str]) -> Generator[Tuple[str, str], None, None]:
+    for file_name in file_names:
+        # Open the file
+        with open(file_name) as f:
+            while True: 
+                # EOF?
                 line = f.readline()
                 if line == '':
                     break
+
+                # Read doc no
+                match = supply_docs_doc_read_pattern.search(line)
+                if not match:
+                    continue # or pass if error
+
+                docno = match.group(1)
+                line = line[match.end():]
+                text = ""
+                while True:
+                    # contain end of doc?
+                    match = supply_docs_doc_read_end_pattern.search(line)
+                    if match:
+                        # yield the docno and the text
+                        text += line[:match.start()]
+                        yield docno, text
+                        break
+                    else:
+                        text += line
+
+                    line = f.readline()
+                    if line == '': # pass if the doc isn't ended but the the file is
+                        break
 
 # %%
 
