@@ -3,6 +3,7 @@ import re
 from typing import Tuple, Generator
 from sys import argv
 
+
 if len(argv) < 2:
     print(argv[0], "(filename)")
     exit(-1)

@@ -1,0 +1,38 @@
+..\document\Practice_02_data\01-Text_Only-Ascii-Coll-1-10-NoSem
+4.78125
+..\document\Practice_02_data\02-Text_Only-Ascii-Coll-11-20-NoSem
+3.203125
+..\document\Practice_02_data\03-Text_Only-Ascii-Coll-21-50-NoSem
+14.453125
+..\document\Practice_02_data\04-Text_Only-Ascii-Coll-51-100-NoSem
+16.0625
+..\document\Practice_02_data\05-Text_Only-Ascii-Coll-101-200-NoSem
+119.65625
+
+
+..\document\Practice_02_data\06-Text_Only-Ascii-Coll-201-500-NoSem
+Traceback (most recent call last):
+  File "C:\Users\thoma\Desktop\coursM2DSC-2021-2022\Recherche Information\TP\TP2\RechercheInformation\practice2\ex1.py", line 119, in <module>
+    wl = index.fetch_or_create_object(word)
+  File "C:\Users\thoma\Desktop\coursM2DSC-2021-2022\Recherche Information\TP\TP2\RechercheInformation\practice2\ex1.py", line 66, in fetch_or_create_object
+    wl = IndexObject(self.size)
+  File "C:\Users\thoma\Desktop\coursM2DSC-2021-2022\Recherche Information\TP\TP2\RechercheInformation\practice2\ex1.py", line 47, in __init__
+    self.tf = [0 for _ in range(size)]
+  File "C:\Users\thoma\Desktop\coursM2DSC-2021-2022\Recherche Information\TP\TP2\RechercheInformation\practice2\ex1.py", line 47, in <listcomp>
+    self.tf = [0 for _ in range(size)]
+MemoryError
+
+
+
+df_>compte total doccurence
+tf_>compte d'occurence dans un doc
+index.objects_>la liste de token
+
+l'erreur
+fetch_or_create_object-> dansIndexStore
+
+on crée un nouveau token avec size de la liste de token
+
+problème apparait dans constructeur de token ->IndexObject
+
+size -> nombre de ligne dans le document

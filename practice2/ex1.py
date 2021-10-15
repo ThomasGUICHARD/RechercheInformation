@@ -3,7 +3,7 @@ from typing import Tuple, Generator
 from sys import argv
 from os import listdir
 from os.path import isfile, join
-
+import time
 if len(argv) < 2:
     print(argv[0], "(filename)")
     exit(-1)
@@ -44,7 +44,8 @@ fList = [f for f in listdir(argv[1]) if isfile(join(argv[1], f))]
 class IndexObject:
     def __init__(self, size: int) -> None:
         self.df = 0
-        self.tf = [0 for _ in range(size)]
+        self.tf = [0 for _ in range(size)] #ERREUR ICI au niveau de size qui est le nb ligne et pas le nbdoc
+        #range(size)0 for _ in range(100000)
 
 
 class IndexStore:
@@ -62,11 +63,7 @@ class IndexStore:
 
     def fetch_or_create_object(self, word: str) -> IndexObject:
         if word in self.objects:
-            if word=="06":
-                print("find"+word)
             return self.objects[word]
-        if word == "06":
-            print("not found"+word)
         wl = IndexObject(self.size)
         self.objects[word] = wl
         return wl
@@ -83,33 +80,40 @@ class IndexStore:
 
 
 #for f in fList:
-for i in range(1):
+start = time.process_time()
+#t = [0 for _ in range(3)]
+for i in range(0,1,1):#len(fList)
+    start = time.process_time()
     f=fList[i]
     print(join(argv[1], f))
     with open(join(argv[1], f), "r") as myRepo:
         lines = myRepo.readlines()
     # %%
+
     index = IndexStore(len(lines))
 
     # Building index
-    docnotmp=""
+    docnotmp=0
 
-    for i in range(len(lines)):
-        line = lines[i]
+    for j in range(len(lines)):
+        line = lines[j]
         doctext = read_doc(line)
+
         docno = docnotmp
-        if read_doc_id(line) != None:
+        if read_doc_id(line) != None :
             docno = read_doc_id(line)
 
-        docnotmp=docno
+
+        ##print(docno==docnotmp)
+
 
        # print("doooooooooooooooooocnnnnnoobissssss{0}".format(docnobis))
         #print("doooooooooooooooooocnnnnnoo{0}".format(docno))
-
-
-
+        docnotmp = docno
         docno = index.locate_docid(docno)
+
         if doctext != None:
+
             words = re.findall('\w+', doctext)
             for w in words:
                 word = w.lower()
@@ -117,10 +121,16 @@ for i in range(1):
                 wl = index.fetch_or_create_object(word)
                 wl.df += 1
                 wl.tf[docno] += 1
+    end = time.process_time()
+    print(end - start)
+    #t[i-1] =end - start
 
-    # %%
-    for word in sorted(index.objects):
-        io = index.objects[word]
-        print("{0}=df({1})".format(io.df, word))
-        for tf, doc in index.tf_doc_of_object(word):
-            print("\t{0} {1}".format(tf, str(doc)))
+#print(t)
+# %%
+"""
+for word in sorted(index.objects):
+    io = index.objects[word]
+    print("{0}=df({1})".format(io.df, word))
+    for tf, doc in index.tf_doc_of_object(word):
+        print("\t{0} {1}".format(tf, str(doc)))
+"""
