@@ -34,6 +34,36 @@ def read_doc(text: str) -> str:
         return None
     return matcher.group(2)
 
+
+supply_docs_doc_read_pattern = re.compile("<doc><docno>([^<]*)</docno>")
+supply_docs_doc_read_end_pattern = re.compile("</doc>")
+
+def supply_docs(file_name: str) -> Generator[Tuple[str, str], None, None]:
+    with open(file_name) as f:
+        while True: 
+            line = f.readline()
+            if line == '':
+                break
+            match = supply_docs_doc_read_pattern.search(line)
+            if not match:
+                continue
+
+            docno = match.group(1)
+            line = line[match.end():]
+            text = ""
+            while True:
+                match = supply_docs_doc_read_end_pattern.search(line)
+                if match:
+                    text += line[:match.start()]
+                    yield docno, text
+                    break
+                else:
+                    text += line
+
+                line = f.readline()
+                if line == '':
+                    break
+
 # %%
 
 fList = [f for f in listdir(argv[1]) if isfile(join(argv[1], f))]
