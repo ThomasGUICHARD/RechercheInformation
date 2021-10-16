@@ -1,9 +1,11 @@
 import re
-from typing import List, Set, Tuple, Generator, Dict
+from typing import List, Set, Tuple, Generator, Dict, TextIO
 from sys import argv
-from os import listdir
-from os.path import isfile, join
+import os
+import os.path
 import time
+import gzip
+
 if len(argv) < 2:
     print(argv[0], "(filename+)")
     exit(-1)
@@ -12,10 +14,27 @@ supply_docs_doc_read_pattern = re.compile("<doc><docno>([^<]*)</docno>")
 supply_docs_doc_read_end_pattern = re.compile("</doc>")
 
 
-def supply_docs(file_names: List[str]) -> Generator[Tuple[str, str], None, None]:
+def open_doc(file_name: str, *args, **kwargs) -> TextIO:
+    if file_name.lower().endswith(".gz"):
+        return gzip.open(file_name, *args, **kwargs)
+    else:
+        return open(file_name, *args, **kwargs)
+
+
+def supply_files(file_names: List[str]) -> Generator[str, None, None]:
     for file_name in file_names:
+        if os.path.isdir(file_name):
+            for f in supply_files([os.path.join(file_name, f) for f in os.listdir(file_name)]):
+                yield f
+        else:
+            yield file_name
+
+
+def supply_docs(file_names: List[str]) -> Generator[Tuple[str, str], None, None]:
+    for file_name in supply_files(file_names):
+        print("Reading ", file_name, "...", sep="")
         # Open the file
-        with open(file_name, encoding="utf8") as f:
+        with open_doc(file_name, "rt", encoding="utf8") as f:
             while True:
                 # EOF?
                 line = f.readline()
@@ -167,24 +186,32 @@ index = IndexStore()
 
 start = time.process_time()
 
+doc_count = 0
+word_count = 0
+
 for docno, doctext in supply_docs(argv[1:]):
+    doc_count += 1
     words = re.findall('\w+', doctext)
     for w in words:
         word = w.lower()
 
         wl = index.fetch_or_create_object(word)
         wl.add_find(docno)
-
+        word_count += 1
 end = time.process_time()
-print(end - start)
-#t[i-1] =end - start
 
-# %%
-for word in sorted(index.objects):
-    io = index.objects[word]
-    print("{0}=df({1})".format(io.df, word))
-    for tf, doc in index.tf_doc_of_object(word):
-        print("\t{0} {1}".format(tf, doc))
+print("Indexing time: ", end - start, "s", sep="")
+print("Word count:    ", word_count, " word(s)", sep="")
+print("Doc count:     ", doc_count, " doc(s)", sep="")
+
+if doc_count <= 10:
+    for word in sorted(index.objects):
+        io = index.objects[word]
+        print("{0}=df({1})".format(io.df, word))
+        for tf, doc in index.tf_doc_of_object(word):
+            print("\t{0} {1}".format(tf, doc))
+else:
+    print("List avoided because doc count > 10")
 
 # for doc in index.parse(" ".join(argv[2:])):
 #     print("-", doc)
