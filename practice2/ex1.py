@@ -6,6 +6,10 @@ import os.path
 from timing import TimingWriting
 import gzip
 
+from nltk.corpus import stopwords
+stop_words = set(stopwords.words('english'))
+
+
 if len(argv) < 2:
     print(argv[0], "(filename+)")
     exit(-1)
@@ -204,9 +208,17 @@ for docno, doctext in supply_docs(argv[1:]):
 
 logger.end()
 
-print("Indexing time:   ", logger.get_time(), "s", sep="")
-print("Doc count:       ", doc_count, " doc(s)", sep="")
-print("Vocabulary size: ", len(index.objects), " word(s)", sep="")
+
+# Delete stop words
+without_stop_words = len(index.objects)
+for word in stop_words:
+    if word in index.objects:
+        del index.objects[word]
+
+print("Indexing time:          ", logger.get_time(), "s", sep="")
+print("Doc count:              ", doc_count, " doc(s)", sep="")
+print("Vac. size (stop words): ", len(index.objects), " word(s)", sep="")
+print("Vocabulary size:        ", without_stop_words, " word(s)", sep="")
 
 
 if doc_count <= 10:
