@@ -197,12 +197,15 @@ index = IndexStore()
 logger.start()
 
 doc_count = 0
+word_count = 0
 
 for docno, doctext in supply_docs(argv[1:]):
     doc_count += 1
     words = re.findall('\w+', doctext)
     for w in words:
         word = w.lower()
+
+        word_count += 1
 
         # P3 - Delete stop words
 
@@ -220,6 +223,7 @@ logger.end()
 
 print("Indexing time:   ", logger.get_time(), "s", sep="")
 print("Doc count:       ", doc_count, " doc(s)", sep="")
+print("Word count:      ", word_count, " word(s)", sep="")
 print("Vocabulary size: ", len(index.objects), " word(s)", sep="")
 
 
