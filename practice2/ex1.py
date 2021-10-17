@@ -3,12 +3,14 @@ from typing import List, Set, Tuple, Generator, Dict, TextIO
 from sys import argv
 import os
 import os.path
-import time
+from timing import TimingWriting
 import gzip
 
 if len(argv) < 2:
     print(argv[0], "(filename+)")
     exit(-1)
+
+logger = TimingWriting()
 
 supply_docs_doc_read_pattern = re.compile("<doc><docno>([^<]*)</docno>")
 supply_docs_doc_read_end_pattern = re.compile("</doc>")
@@ -32,7 +34,7 @@ def supply_files(file_names: List[str]) -> Generator[str, None, None]:
 
 def supply_docs(file_names: List[str]) -> Generator[Tuple[str, str], None, None]:
     for file_name in supply_files(file_names):
-        print("Reading ", file_name, "...", sep="")
+        logger.write_no_endl("Reading " + os.path.basename(file_name) + "...")
         # Open the file
         with open_doc(file_name, "rt", encoding="utf8") as f:
             while True:
@@ -63,9 +65,12 @@ def supply_docs(file_names: List[str]) -> Generator[Tuple[str, str], None, None]
                     line = f.readline()
                     if line == '':  # pass if the doc isn't ended but the the file is
                         break
-
+    logger.write_no_endl("Completed")
+    print()
 
 # locate end parenthesis of boolean expression
+
+
 def locate_end_parenthesis(exp: List[str], start: int) -> int:
     deep = 0
     for i in range(start, len(exp)):
@@ -184,7 +189,7 @@ index = IndexStore()
 
 # Building index
 
-start = time.process_time()
+logger.start()
 
 doc_count = 0
 word_count = 0
@@ -198,9 +203,10 @@ for docno, doctext in supply_docs(argv[1:]):
         wl = index.fetch_or_create_object(word)
         wl.add_find(docno)
         word_count += 1
-end = time.process_time()
 
-print("Indexing time: ", end - start, "s", sep="")
+logger.end()
+
+print("Indexing time: ", logger.get_time(), "s", sep="")
 print("Word count:    ", word_count, " word(s)", sep="")
 print("Doc count:     ", doc_count, " doc(s)", sep="")
 
