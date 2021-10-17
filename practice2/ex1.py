@@ -1,3 +1,4 @@
+from nltk.stem import PorterStemmer
 import re
 from typing import List, Set, Tuple, Generator, Dict, TextIO
 from sys import argv
@@ -8,7 +9,7 @@ import gzip
 
 from nltk.corpus import stopwords
 stop_words = set(stopwords.words('english'))
-
+porter_stemmer = PorterStemmer()
 
 if len(argv) < 2:
     print(argv[0], "(filename+)")
@@ -203,10 +204,14 @@ for docno, doctext in supply_docs(argv[1:]):
     for w in words:
         word = w.lower()
 
-        # Delete stop words
+        # P3 - Delete stop words
 
         if word in index.objects:
             continue
+
+        # P4 - Stemmer
+
+        word = porter_stemmer.stem(word)
 
         wl = index.fetch_or_create_object(word)
         wl.add_find(docno)
