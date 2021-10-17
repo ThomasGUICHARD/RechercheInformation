@@ -1,2 +1,5 @@
 
 output
+
+*.bin
+__pycache__/
