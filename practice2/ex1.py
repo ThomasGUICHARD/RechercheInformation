@@ -192,7 +192,6 @@ index = IndexStore()
 logger.start()
 
 doc_count = 0
-word_count = 0
 
 for docno, doctext in supply_docs(argv[1:]):
     doc_count += 1
@@ -202,13 +201,13 @@ for docno, doctext in supply_docs(argv[1:]):
 
         wl = index.fetch_or_create_object(word)
         wl.add_find(docno)
-        word_count += 1
 
 logger.end()
 
-print("Indexing time: ", logger.get_time(), "s", sep="")
-print("Word count:    ", word_count, " word(s)", sep="")
-print("Doc count:     ", doc_count, " doc(s)", sep="")
+print("Indexing time:   ", logger.get_time(), "s", sep="")
+print("Doc count:       ", doc_count, " doc(s)", sep="")
+print("Vocabulary size: ", len(index.objects), " word(s)", sep="")
+
 
 if doc_count <= 10:
     for word in sorted(index.objects):
