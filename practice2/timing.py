@@ -14,6 +14,7 @@ class TimingWriting:
         Start of the record
         """
         self.start_time = time.process_time()
+        self.write_no_endl("Starting...")
 
     def end(self) -> None:
         """
@@ -21,6 +22,8 @@ class TimingWriting:
         """
         self.end_thread = True
         self.end_time = time.process_time()
+        self.write_no_endl("Completed.")
+        print()
 
     def get_time(self) -> float:
         """
@@ -28,17 +31,23 @@ class TimingWriting:
         """
         return self.end_time - self.start_time
 
+    def write(self, text: str) -> None:
+        s = self.get_text(text)
+        print(s)
+        self.latest_print = s
+
     def write_no_endl(self, text: str) -> None:
         """
 
         """
         self.remove_text()
-        now = time.process_time()
 
-        s = "[{0:.3f}s] {1}".format(now - self.start_time, text)
-
+        s = self.get_text(text)
         print(s, end="", flush=True)
         self.latest_print = s
+
+    def get_text(self, text: str):
+        return "[{0:.3f}s] {1}".format(time.process_time() - self.start_time, text)
 
     def rewrite_text(self) -> None:
         self.write_no_endl(self.latest_print)

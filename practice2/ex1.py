@@ -39,7 +39,7 @@ def supply_files(file_names: List[str]) -> Generator[str, None, None]:
 
 def supply_docs(file_names: List[str]) -> Generator[Tuple[str, str], None, None]:
     for file_name in supply_files(file_names):
-        logger.write_no_endl("Reading " + os.path.basename(file_name) + "...")
+        logger.write("Reading " + os.path.basename(file_name) + "...")
         # Open the file
         with open_doc(file_name, "rt", encoding="utf8") as f:
             while True:
@@ -70,8 +70,7 @@ def supply_docs(file_names: List[str]) -> Generator[Tuple[str, str], None, None]
                     line = f.readline()
                     if line == '':  # pass if the doc isn't ended but the the file is
                         break
-    logger.write_no_endl("Completed")
-    print()
+    logger.write("Reading completed")
 
 # locate end parenthesis of boolean expression
 
@@ -122,6 +121,14 @@ class IndexObject:
         else:
             self.tf[doc] = 1
 
+    def merge_with(self, index2) -> None:
+        self.df += index2.df
+        for doc in index2.tf:
+            if doc in self.tf:
+                self.tf[doc] += index2.tf[doc]
+            else:
+                self.tf[doc] = index2.tf[doc]
+
 
 class IndexStore:
     def __init__(self) -> None:
@@ -149,6 +156,29 @@ class IndexStore:
         if word in self.objects:
             return self.objects[word].tf
         return dict()
+
+    def remove_stopwords(self):
+        logger.write("Removing stopwords...")
+        for word in stop_words:
+            if word in self.objects:
+                del self.objects[word]
+
+    def apply_stemmer(self):
+        logger.write("Applying stemmer...")
+
+        # TODO: duplicate the size of the heap, find a better way
+        future_objects = dict()
+
+        for word in self.objects:
+            obj = self.objects[word]
+            w = porter_stemmer.stem(word)
+
+            if w in future_objects:
+                future_objects[w].merge_with(obj)
+            else:
+                future_objects[w] = obj
+
+        self.objects = future_objects
 
     def parse_expr(self, exp: List[str]) -> Set[str]:
         and_result = set()
@@ -207,17 +237,13 @@ for docno, doctext in supply_docs(argv[1:]):
 
         word_count += 1
 
-        # P3 - Delete stop words
-
-        if word in index.objects:
-            continue
-
-        # P4 - Stemmer
-
-        word = porter_stemmer.stem(word)
-
         wl = index.fetch_or_create_object(word)
         wl.add_find(docno)
+
+# P3 - Delete stop words
+index.remove_stopwords()
+# P4 - Stemmer
+index.apply_stemmer()
 
 logger.end()
 
