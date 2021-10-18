@@ -40,13 +40,9 @@ class SearchEngine():
         self.rddListDocument=self.sc.parallelize(self.listDocument)
         self.rddListDocumentData=self.rddListDocument.map(lambda x : x[1])
         e=list(map(self.statisticsDocuments,self.rddListDocument.collect()))
-        self.collectionStats["documentLenght"]=e
-        print("------------------------------------------------------------------")
-        print(self.collectionStats["documentLenght"])
-        print("------------------------------------------------------------------")
-
+        self.collectionStats["documentLenghtStats"]=e
     def statisticsDocuments(self,x):
-        return "DocumentId : {} -- DocumentLength : {}".format(x[0],len(x[1]))
+        return {"DocumentId" :x[0]  , "DocumentLength" : len(x[1])}
     def setMatrixIncidence(self):
         self.tf_matrix = self.tf.fit_transform(self.rddListDocumentData.collect())
         self.feature_names=self.tf.get_feature_names_out()
@@ -69,32 +65,33 @@ class SearchEngine():
 
         barWidth = 0.25
         # set height of bar
-        bars1 = [1.7290585041046143,1.706298589706421,1.667466640472412,1.6934142112731934,2.011308193206787,3.685555934906006,4.840803623199463,1.246026039123535]
+        bars1 = [x["DocumentLength"] for x in self.collectionStats["documentLenghtStats"]]
         
         # Set position of bar on X axis
-        r1 = numpy.arange(8)
+        r1 = numpy.arange(len(self.collectionStats["documentLenghtStats"]))
 
         # Make the plot
-        pyplot.bar(r1, bars1, color='#00ff00', width=barWidth,
-                edgecolor='white')
+        # pyplot.Line2D(r1, bars1, color='#00ff00', width=barWidth,
+        #         edgecolor='white')
         
-
+        pyplot.figure()# début de la figure5  plt.plot(X, Y)
         # Add xticks on the middle of the group bars
-        pyplot.xlabel('Fichier', fontweight='bold')
-        pyplot.ylabel('Running Time', fontweight='bold')
-        pyplot.xticks([r  for r in range(len(bars1))], ["01","02","03","04","05","06","07","08"])
-        # Create legend & Show graphic
-        pyplot.legend()
+        # pyplot.xlabel('Documents ID', fontweight='bold')
+        # pyplot.ylabel('Length', fontweight='bold')
+        # pyplot.xticks([r  for r in range(len(bars1))], [x["DocumentId"] for x in self.collectionStats["documentLenghtStats"]])
+        # # Create legend & Show graphic
+        # pyplot.legend()
+        pyplot.plot([x["DocumentId"] for x in self.collectionStats["documentLenghtStats"]],bars1)
         pyplot.show()
-
 
     def run(self):
         
         
         start_time=time.time()
         self.setListDocument()
-        self.setMatrixIncidence()
-        self.setGeneratedDictionary()
+        # self.setMatrixIncidence()
+        # self.setGeneratedDictionary()
+        self.documentStatistic()
         # print("Generated Collection :")
         # print(self.generatedDictionary)
         # print("\n Collection Statisques :")
