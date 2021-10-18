@@ -14,7 +14,6 @@ class TimingWriting:
         Start of the record
         """
         self.start_time = time.process_time()
-        self.write_no_endl("Starting...")
 
     def end(self) -> None:
         """
@@ -22,7 +21,6 @@ class TimingWriting:
         """
         self.end_thread = True
         self.end_time = time.process_time()
-        self.write_no_endl("Completed.")
         print()
 
     def get_time(self) -> float:

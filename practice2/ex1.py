@@ -225,6 +225,7 @@ index = IndexStore()
 # Building index
 
 logger.start()
+logger.write("Starting...")
 
 doc_count = 0
 word_count = 0
@@ -245,6 +246,7 @@ index.remove_stopwords()
 # P4 - Stemmer
 index.apply_stemmer()
 
+logger.write("Completed...")
 logger.end()
 
 print("Indexing time:   ", logger.get_time(), "s", sep="")
