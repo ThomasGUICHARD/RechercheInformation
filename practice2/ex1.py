@@ -121,7 +121,7 @@ class IndexObject:
         else:
             self.tf[doc] = 1
 
-    def merge_with(self, index2) -> None:
+    def merge_with(self, index2: 'IndexObject') -> None:
         self.df += index2.df
         for doc in index2.tf:
             if doc in self.tf:
