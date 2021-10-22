@@ -1,0 +1,8 @@
+q1: information on cars
+d1: all you've ever wanted to know about cars
+
+q2: information on cars
+d2: information on trucks, information on planes, information on trains
+
+q3: red cars and red trucks
+d3: cops stop red cars more often
