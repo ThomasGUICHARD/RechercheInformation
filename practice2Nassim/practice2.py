@@ -18,7 +18,7 @@ class SearchEngine():
         self.rddListDocument=None
         self.listDocumentData=[]
         self.rddListDocumentData=None
-        self.tf = CountVectorizer(stop_words=nltk.corpus.stopwords.words('english'))
+        self.tf = CountVectorizer(stop_words=nltk.corpus.stopwords.words('english')) # if we want to search with stopwords we have juste to remove the CountVectorizer parameter 
         self.stop_words = nltk.corpus.stopwords.words('english')
         self.tf_matrix=None
         self.feature_names=[]
@@ -30,6 +30,7 @@ class SearchEngine():
         self.sc=self.spark.sparkContext
         self.timelist =[]
         self.porterStemmer=PorterStemmer()
+        self.collectionStats={"termCollectionFrenquency":[]}
     def setListDocument(self):
         for filename in os.listdir(self.dataDirectory):
             print(filename)
@@ -38,35 +39,64 @@ class SearchEngine():
             self.listDocument.extend(re.findall( self.regexDocument , _dataFile))
         self.rddListDocument=self.sc.parallelize(self.listDocument)
         self.rddListDocumentData=self.rddListDocument.map(lambda x : x[1])
-        # e=map(self.statisticsDocuments,self.rddListDocument.collect())
-        # print(list(e))
+        e=list(map(self.statisticsDocuments,self.rddListDocument.collect()))
+        self.collectionStats["documentLenghtStats"]=e
     def statisticsDocuments(self,x):
-        return "DocumentId : {} \nDocumentLength : {}".format(x[0],len(x[1]))
+        return {"DocumentId" :x[0]  , "DocumentLength" : len(x[1])}
     def setMatrixIncidence(self):
         self.tf_matrix = self.tf.fit_transform(self.rddListDocumentData.collect())
         self.feature_names=self.tf.get_feature_names_out()
-        # self.feature_names=[ self.porterStemmer.stem(x) for x in  self.feature_names]
-        print("term length : {}".format(len(self.feature_names)))
+        # self.feature_names=[ self.porterStemmer.stem(x) for x in  self.feature_names]  FOR PORTER STEMMER !!
+        
+        self.collectionStats["VocabularySize"]=len(self.feature_names)
         self.incidenceMatrix= self.tf_matrix.A
     def setGeneratedDictionary(self):
         for _id , _word in enumerate(self.feature_names) :
             self.generatedDictionary[_word]=[]
             _columnOccurance=self.incidenceMatrix[:,_id]
+            self.collectionStats["termCollectionFrenquency"].append({_word:sum(_columnOccurance)})
             for _idOccurence , _docNBR in enumerate(_columnOccurance):
                 if _docNBR !=0 :
                     _list=self.generatedDictionary[_word]
-                    _list.append("fr:{}  D{}".format(_docNBR,_idOccurence))
+                    _list.append("fr:{} -- D{} -- termeLength : {}".format(_docNBR,_idOccurence,len(_word)))
                     self.generatedDictionary[_word]=_list
+
+    def documentStatistic(self):
+
+        barWidth = 0.25
+        # set height of bar
+        bars1 = [x["DocumentLength"] for x in self.collectionStats["documentLenghtStats"]]
+        
+        # Set position of bar on X axis
+        r1 = numpy.arange(len(self.collectionStats["documentLenghtStats"]))
+
+        # Make the plot
+        # pyplot.Line2D(r1, bars1, color='#00ff00', width=barWidth,
+        #         edgecolor='white')
+        
+        pyplot.figure()# début de la figure5  plt.plot(X, Y)
+        # Add xticks on the middle of the group bars
+        # pyplot.xlabel('Documents ID', fontweight='bold')
+        # pyplot.ylabel('Length', fontweight='bold')
+        # pyplot.xticks([r  for r in range(len(bars1))], [x["DocumentId"] for x in self.collectionStats["documentLenghtStats"]])
+        # # Create legend & Show graphic
+        # pyplot.legend()
+        pyplot.plot([x["DocumentId"] for x in self.collectionStats["documentLenghtStats"]],bars1)
+        pyplot.show()
+
     def run(self):
         
         
         start_time=time.time()
         self.setListDocument()
-        self.setMatrixIncidence()
-        self.setGeneratedDictionary()
-        print(self.generatedDictionary)
-        # print(self.generatedDictionary)    
-        print(time.time() - start_time)
+        # self.setMatrixIncidence()
+        # self.setGeneratedDictionary()
+        self.documentStatistic()
+        # print("Generated Collection :")
+        # print(self.generatedDictionary)
+        # print("\n Collection Statisques :")
+        # print(self.collectionStats)
+        # print(time.time() - start_time)
 
         # # print(self.timelist)
         # barWidth = 0.25
