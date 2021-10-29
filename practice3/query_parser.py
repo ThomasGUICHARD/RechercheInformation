@@ -38,7 +38,7 @@ def or_lst(a: Set[str], b: Set[str], not_b: bool) -> None:
 
 
 def parse_expr(store: IndexStore, exp: List[str]) -> Set[str]:
-    and_result = set()
+    and_result = None
 
     i = 0
     next_inverted = False
@@ -56,24 +56,29 @@ def parse_expr(store: IndexStore, exp: List[str]) -> Set[str]:
         if op == "(":
             end = locate_end_parenthesis(exp, i)
             output = parse_expr(store, exp[i:end])
-            and_lst(and_result, output, next_inverted)
+            if and_result == None:
+                and_result = output
+            else:
+                and_lst(and_result, output, next_inverted)
             i = end + 1
         elif op == "|":
             b = parse_expr(store, exp[i:len(exp)])
-            or_lst(and_result, b, next_inverted)
+            if and_result == None:
+                and_result = b
+            else:
+                or_lst(and_result, b, next_inverted)
             return and_result
         else:
+            output = set(store.fetch_word_tf(op).keys())
             # word
-            and_lst(and_result, set(
-                store.fetch_word_tf(op).keys()), next_inverted)
+            if and_result == None:
+                and_result = output
+            else:
+                and_lst(and_result, output, next_inverted)
         next_inverted = False
 
     return and_result
 
 
-def parse(store: IndexStore, exp: str) -> Generator[str, None, None]:
-    result = parse_expr(store, exp.lower().split(" "))
-
-    for i in range(len(result)):
-        if result[i] != 0:
-            yield store.corpus_name_ids[i]
+def parse(store: IndexStore, exp: str) -> Set[str]:
+    return parse_expr(store, exp.lower().split())

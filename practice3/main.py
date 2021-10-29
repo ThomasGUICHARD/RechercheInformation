@@ -77,7 +77,7 @@ def main():
         while True:
             query = input("> ")
             timer.start()
-            answer = [d for d in parse(index, query)]
+            answer = parse(index, query)
             timer.end()
             print(len(answer), " element(s) in ",
                   timer.last_time(), "s", sep="")
