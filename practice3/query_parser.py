@@ -55,23 +55,24 @@ def parse_expr(store: IndexStore, exp: List[str]) -> Set[str]:
 
         if op == "(":
             end = locate_end_parenthesis(exp, i)
-            output = store.parse_expr(exp[i:end])
+            output = parse_expr(store, exp[i:end])
             and_lst(and_result, output, next_inverted)
             i = end + 1
         elif op == "|":
-            b = store.parse_expr(exp[i:len(exp)])
+            b = parse_expr(store, exp[i:len(exp)])
             or_lst(and_result, b, next_inverted)
             return and_result
         else:
             # word
-            and_lst(and_result, store.fetch_word_tf(op), next_inverted)
+            and_lst(and_result, set(
+                store.fetch_word_tf(op).keys()), next_inverted)
         next_inverted = False
 
     return and_result
 
 
 def parse(store: IndexStore, exp: str) -> Generator[str, None, None]:
-    result = store.parse_expr(exp.lower().split(" "))
+    result = parse_expr(store, exp.lower().split(" "))
 
     for i in range(len(result)):
         if result[i] != 0:

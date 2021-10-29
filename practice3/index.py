@@ -1,5 +1,5 @@
 from nltk.stem import PorterStemmer
-from typing import List, Set, Tuple, Generator, Dict
+from typing import Tuple, Generator, Dict
 from timing import logger
 
 from nltk.corpus import stopwords

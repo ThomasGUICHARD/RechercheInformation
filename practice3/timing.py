@@ -3,6 +3,21 @@
 import time
 
 
+class QuickTime:
+    def __init__(self) -> None:
+        self.start_time = 0
+        self.end_time = 0
+
+    def start(self) -> None:
+        self.start_time = time.process_time()
+
+    def end(self) -> None:
+        self.end_time = time.process_time()
+
+    def last_time(self) -> float:
+        return self.end_time - self.start_time
+
+
 class TimingWriting:
     def __init__(self) -> None:
         self.latest_print = ""
@@ -19,7 +34,6 @@ class TimingWriting:
         """
         End of the record
         """
-        self.end_thread = True
         self.end_time = time.process_time()
         print()
 
