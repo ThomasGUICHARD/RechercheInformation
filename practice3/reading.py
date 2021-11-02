@@ -12,20 +12,29 @@ supply_docs_doc_read_end_pattern = re.compile("</doc>")
 
 
 def open_doc(file_name: str, *args, **kwargs) -> Generator[Tuple[TextIO, str], None, None]:
+    """
+    generate TextIO and a file description for each files in file_name, can read .gz .zip or 
+    text file, the arguments are the same as TextIOWrapper except the file_name
+    """
     fnl = file_name.lower()
-    if fnl.endswith(".gz"):
+
+    if fnl.endswith(".gz"):  # .gz file
         yield TextIOWrapper(gzip.open(file_name, "rb"), *args, **kwargs), os.path.basename(file_name)
-    if fnl.endswith(".zip"):
+    if fnl.endswith(".zip"):  # .zip file
         with zipfile.ZipFile(file_name) as archive:
             for f in archive.namelist():
                 yield TextIOWrapper(archive.open(f), *args, **kwargs), os.path.join(os.path.basename(file_name), f)
-    else:
+    else:  # Read all the other files as text file
         yield TextIOWrapper(open(file_name, "rb"), *args, **kwargs), os.path.basename(file_name)
 
 
 def supply_files(file_names: List[str]) -> Generator[str, None, None]:
+    """
+    search and generate all the file_names for a particular name
+    """
     for file_name in file_names:
         if os.path.isdir(file_name):
+            # Is dir? fetch the sub files
             for f in supply_files([os.path.join(file_name, f) for f in os.listdir(file_name)]):
                 yield f
         else:
@@ -33,6 +42,9 @@ def supply_files(file_names: List[str]) -> Generator[str, None, None]:
 
 
 def supply_docs(file_names: List[str]) -> Generator[Tuple[str, str], None, None]:
+    """
+    generate the tuple docno,text for each document in the files of file_names
+    """
     for file_name in supply_files(file_names):
         # Open the file
         for iofile, rfile_name in open_doc(file_name, encoding="utf8"):

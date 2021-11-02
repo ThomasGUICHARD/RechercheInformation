@@ -4,6 +4,9 @@ from index import IndexStore
 
 
 def locate_end_parenthesis(exp: List[str], start: int) -> int:
+    """
+    locate the next parenthesis index, raise an exception if no next parenthesis is found
+    """
     deep = 0
     for i in range(start, len(exp)):
         c = exp[i]
@@ -38,6 +41,9 @@ def or_lst(a: Set[str], b: Set[str], not_b: bool) -> None:
 
 
 def parse_expr(store: IndexStore, exp: List[str]) -> Set[str]:
+    """
+    parse the expression and return a set of the matched documents
+    """
     and_result = None
 
     i = 0
@@ -46,13 +52,16 @@ def parse_expr(store: IndexStore, exp: List[str]) -> Set[str]:
         op = exp[i]
         i += 1
 
+        # NOT operator
         if op == "!":
             next_inverted = True
             continue
 
+        # Empty part
         if op == "":
             continue
 
+        # Parenthesis expression
         if op == "(":
             end = locate_end_parenthesis(exp, i)
             output = parse_expr(store, exp[i:end])
@@ -61,6 +70,7 @@ def parse_expr(store: IndexStore, exp: List[str]) -> Set[str]:
             else:
                 and_lst(and_result, output, next_inverted)
             i = end + 1
+        # Or operator
         elif op == "|":
             b = parse_expr(store, exp[i:len(exp)])
             if and_result == None:
@@ -68,6 +78,7 @@ def parse_expr(store: IndexStore, exp: List[str]) -> Set[str]:
             else:
                 or_lst(and_result, b, next_inverted)
             return and_result
+        # Word
         else:
             output = set(store.fetch_word_tf(op).keys())
             # word
@@ -81,4 +92,7 @@ def parse_expr(store: IndexStore, exp: List[str]) -> Set[str]:
 
 
 def parse(store: IndexStore, exp: str) -> Set[str]:
+    """
+    parse an expression and return the set of the matched documents
+    """
     return parse_expr(store, exp.lower().split())

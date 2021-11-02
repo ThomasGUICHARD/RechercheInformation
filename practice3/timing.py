@@ -5,24 +5,33 @@ import time
 
 class QuickTime:
     def __init__(self) -> None:
-        self.start_time = 0
-        self.end_time = 0
+        self.start_time: float = 0.
+        self.end_time: float = 0.
 
     def start(self) -> None:
+        """
+        start the timing
+        """
         self.start_time = time.process_time()
 
     def end(self) -> None:
+        """
+        end the timing
+        """
         self.end_time = time.process_time()
 
     def last_time(self) -> float:
+        """
+        get the last time between the last start/end call
+        """
         return self.end_time - self.start_time
 
 
 class TimingWriting:
     def __init__(self) -> None:
-        self.latest_print = ""
-        self.start_time = 0
-        self.end_time = 0
+        self.latest_print: str = ""
+        self.start_time: float = 0
+        self.end_time: float = 0
 
     def start(self) -> None:
         """
@@ -50,7 +59,7 @@ class TimingWriting:
 
     def write_no_endl(self, text: str) -> None:
         """
-
+        Write a line
         """
         self.remove_text()
 
