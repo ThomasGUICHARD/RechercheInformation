@@ -129,8 +129,8 @@ def main():
             query = input("> ")
             timer.start()
             if options.algo != "bool":
-                answer = map(lambda a: a.doc + " (" + str(a.wtdsum) + ")",
-                             index.compute_ranked_retrieval_as_list(query))
+                answer = [
+                    a.doc + " (" + str(a.wtdsum) + ")" for a in index.compute_ranked_retrieval_as_list(query)]
             else:
                 answer = query_parser.parse(index, query)
             timer.end()
