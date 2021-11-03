@@ -1,3 +1,5 @@
+import re
+from math import log10
 from nltk.stem import PorterStemmer
 from typing import Tuple, Generator, Dict
 from timing import logger
@@ -13,6 +15,8 @@ class IndexObject:
         self.tf: int = 0
         # Term frequency for a document
         self.tdf: Dict[str, int] = dict()
+        # future w_{t,d}, require computing
+        self.wtd: Dict[str, float] = dict()
 
     def add_find(self, doc: str) -> None:
         """
@@ -50,6 +54,7 @@ class IndexStore:
     def __init__(self) -> None:
         # term and term data object
         self.objects: Dict[str, IndexObject] = dict()
+        self.doc_size: Dict[str, int] = dict()
 
     def fetch_or_create_object(self, word: str) -> IndexObject:
         """
@@ -116,3 +121,64 @@ class IndexStore:
 
         # Set the new store
         self.objects = future_objects
+
+    def add_word(self, doc: str, word: str) -> None:
+        """
+        add a word to the index by his document
+        """
+
+        wl = self.fetch_or_create_object(word)
+        wl.add_find(doc)
+
+        if doc in self.doc_size:
+            self.doc_size[doc] += 1
+        else:
+            self.doc_size[doc] = 1
+
+    def compute_avg_doc_size(self) -> float:
+        """
+        compute the average doc size of documents
+        """
+        a = 0
+        for doc in self.doc_size:
+            a += self.doc_size[doc]
+
+        return a / len(self.doc_size)
+
+    def compute_smart_ltn(self) -> None:
+        """
+        ex4 compute the smart ltn into the IndexObject.wtd properties
+        """
+        pass
+
+    def compute_smart_ltc(self) -> None:
+        """
+        ex6 compute the smart ltc into the IndexObject.wtd properties
+        """
+        pass
+
+    def compute_bm25(self, k1: float, b: float) -> None:
+        """
+        ex8 compute the bm25 into the IndexObject.wtd properties
+        """
+        pass
+
+    def compute_ranked_retrieval(self, query: str) -> Dict[str, float]:
+        """
+        compute the rsv for each document with a query
+        """
+        words = re.findall("\w+", query)
+
+        rsv = dict()
+
+        # Add for each
+        for word in words:
+            if word in self.objects:
+                wtd = self.objects[word].wtd
+                for doc in wtd:
+                    if doc in rsv:
+                        rsv[doc] += wtd[doc]
+                    else:
+                        rsv[doc] = wtd[doc]
+
+        return rsv

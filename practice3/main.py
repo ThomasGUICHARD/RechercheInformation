@@ -59,8 +59,7 @@ def main():
             word_count += 1
 
             # Fetch an index object and add a find
-            wl = index.fetch_or_create_object(word)
-            wl.add_find(docno)
+            index.add_word(docno, word)
 
         # Ask to compute the stats to produce images
         stats.compute_stat()
