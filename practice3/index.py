@@ -149,7 +149,16 @@ class IndexStore:
         """
         ex4 compute the smart ltn into the IndexObject.wtd properties
         """
-        pass
+        doc_count = len(self.doc_size)
+        for word in self.objects:
+            io = self.objects[word]
+            df = io.get_document_frequency()
+            # Clear old computations
+            io.wtd.clear()
+
+            for doc in io.tdf:
+                tf = io.tdf[doc]
+                io.wtd[doc] = (1 + log10(tf)) * log10(doc_count / df)
 
     def compute_smart_ltc(self) -> None:
         """
