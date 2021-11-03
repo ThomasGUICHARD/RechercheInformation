@@ -1,12 +1,14 @@
 from os import stat
 import re
 from timing import logger, QuickTime
-from index import IndexStore
+from index import IndexObject, IndexStore
 from reading import supply_docs
 from optparse import OptionParser
 from graph_cache import StatCache
-from query_parser import parse
+import query_parser
 import itertools
+
+algorithms = ["bool", "bm25", "ltc", "ltn"]
 
 
 def main():
@@ -25,11 +27,19 @@ def main():
                       help="data output dir", default="output_dir")
     parser.add_option("-S", "--step", dest="step", type="int",
                       help="step for stats", default=1000)
+
+    parser.add_option("-a", "--algorithm", dest="algo",
+                      help="algorithm to use to enter query mode, values: " + " ".join(algorithms), default=algorithms[0])
+
+    parser.add_option("-B", "--bm25b", dest="bm25b", type="float",
+                      help="value of b if --algorithm=bm25", default=0.75)
+    parser.add_option("-K", "--bm25k1", dest="bm25k1", type="float",
+                      help="value of k1 if --algorithm=bm25", default=1.2)
     parser.set_usage(parser.get_prog_name() + " (filename+)")
 
     options, args = parser.parse_args()
 
-    if len(args) < 1:
+    if len(args) < 1 or options.algo not in algorithms:
         parser.print_usage()
         return
 
@@ -72,7 +82,26 @@ def main():
     if options.stemmer:
         index.apply_stemmer()
 
+    if options.algo != "bool":
+        logger.write("Computing algorithm " + options.algo)
+
+        if options.algo == "ltn":
+            index.compute_smart_ltn()
+        elif options.algo == "ltc":
+            index.compute_smart_ltc()
+        elif options.algo == "bm25":
+            index.compute_bm25(options.bm25k1, options.bm25b)
+
+        logger.write(
+            "test ranked retrieval... 'web ranking scoring algorithm'")
+        answer = index.compute_ranked_retrieval_as_list(
+            "web ranking scoring algorithm")
+        # Print the answers
+        for a in itertools.islice(answer, 10):
+            print("-", a.doc, "(" + str(a.wtdsum) + ")")
+
     logger.write("Completed...")
+
     logger.end()
 
     # Produce the stats and the images
@@ -99,7 +128,11 @@ def main():
         while True:
             query = input("> ")
             timer.start()
-            answer = parse(index, query)
+            if options.algo != "bool":
+                answer = map(lambda a: a.doc + " (" + str(a.wtdsum) + ")",
+                             index.compute_ranked_retrieval_as_list(query))
+            else:
+                answer = query_parser.parse(index, query)
             timer.end()
             print(len(answer), " element(s) in ",
                   timer.last_time(), "s", sep="")

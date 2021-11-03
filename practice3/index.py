@@ -1,7 +1,7 @@
 import re
 from math import log10
 from nltk.stem import PorterStemmer
-from typing import Tuple, Generator, Dict
+from typing import List, Tuple, Generator, Dict
 from timing import logger
 
 from nltk.corpus import stopwords
@@ -48,6 +48,12 @@ class IndexObject:
                 self.tdf[doc] += index2.tdf[doc]
             else:
                 self.tdf[doc] = index2.tdf[doc]
+
+
+class RankedRetrivialAnswer:
+    def __init__(self, wtdsum: float, doc: str) -> None:
+        self.wtdsum: float = wtdsum
+        self.doc: str = doc
 
 
 class IndexStore:
@@ -229,5 +235,20 @@ class IndexStore:
                         rsv[doc] += wtd[doc]
                     else:
                         rsv[doc] = wtd[doc]
+
+        return rsv
+
+    def compute_ranked_retrieval_as_list(self, query: str) -> List[RankedRetrivialAnswer]:
+        """
+        compute the rsv for each document with a query and return it as a list sorted by wtdsum
+        """
+        rsvdoc = self.compute_ranked_retrieval(query)
+
+        rsv: List[RankedRetrivialAnswer] = []
+
+        for doc in rsvdoc:
+            rsv.append(RankedRetrivialAnswer(rsvdoc[doc], doc))
+
+        rsv.sort(key=lambda a: a.wtdsum, reverse=True)
 
         return rsv
