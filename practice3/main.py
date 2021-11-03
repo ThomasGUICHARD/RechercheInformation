@@ -86,7 +86,7 @@ def main():
     print("Word count:      ", word_count, " word(s)", sep="")
     print("Vocabulary size: ", len(index.objects), " word(s)", sep="")
 
-    indexDoc.print_index()
+   # indexDoc.print_index()
     index.bm25(indexDoc)
     # Print index if asked or not enough element
     if doc_count <= 10 or options.index:

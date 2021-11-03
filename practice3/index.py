@@ -24,8 +24,8 @@ class IndexObject:
         b = 0.5
         bm25tf= 0
         avdl = colsize/inddoc.nd
-        test =(inddoc.nd - self.tf + 0.5)/(self.tf + 0.5)
-        print(test)
+        test =(inddoc.nd - self.get_document_frequency() + 0.5)/(self.get_document_frequency() + 0.5)
+        ##print(test)
         bm25idf = math.log10(test)
         for doc in self.tdf:
             bm25tf = (self.tdf[doc]*(k+1))/(k*((1-b)+b*inddoc.nw[doc]/avdl)+self.tdf[doc])
