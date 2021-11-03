@@ -192,7 +192,25 @@ class IndexStore:
         """
         ex8 compute the bm25 into the IndexObject.wtd properties
         """
-        pass
+        doc_count = len(self.doc_size)
+        doc_average_length = self.compute_avg_doc_size()
+        for word in self.objects:
+            io = self.objects[word]
+            df = io.get_document_frequency()
+            # Clear old computations
+            io.wtd.clear()
+
+            # compute the idf part
+            bm_idf = log10((doc_count - df + 0.5) / (df + 0.5))
+
+            # compute the tf part
+            for doc in io.tdf:
+                tf = io.tdf[doc]
+                bm_tf = (tf * (k1 + 1)) / \
+                    (k1 * ((1 - b) + b * io.tf / doc_average_length) + tf)
+
+                # put the tf-idf into the wtf
+                io.wtd[doc] = bm_tf * bm_idf
 
     def compute_ranked_retrieval(self, query: str) -> Dict[str, float]:
         """
