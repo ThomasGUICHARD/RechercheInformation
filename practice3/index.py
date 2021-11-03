@@ -1,8 +1,10 @@
+import enum
 from nltk.stem import PorterStemmer
 from typing import Tuple, Generator, Dict
 from timing import logger
-
+from math import log10
 from nltk.corpus import stopwords
+from IndexMode import IndexMode 
 stop_words = set(stopwords.words('english'))
 porter_stemmer = PorterStemmer()
 
@@ -13,6 +15,7 @@ class IndexObject:
         self.tf: int = 0
         # Term frequency for a document
         self.tdf: Dict[str, int] = dict()
+        self.smart_ltn = {}  # {"docno":value}
 
     def add_find(self, doc: str) -> None:
         """
@@ -45,12 +48,20 @@ class IndexObject:
             else:
                 self.tdf[doc] = index2.tdf[doc]
 
+    def smartLTN_values(self, word, doc_count):
+        """
+        Set Smart Tn Value of the $word associated to document docno in $list_docs
+        """
+        for _document in self.tdf:
+            self.smart_ltn.update({_document: (
+                1 + log10(self.tdf[_document]))*(log10(doc_count/self.get_document_frequency()))})
+
 
 class IndexStore:
     def __init__(self) -> None:
         # term and term data object
         self.objects: Dict[str, IndexObject] = dict()
-
+        self.indexMode=IndexMode.BOOLEAN
     def fetch_or_create_object(self, word: str) -> IndexObject:
         """
         Fetch or create an index object for a certain word
@@ -116,3 +127,5 @@ class IndexStore:
 
         # Set the new store
         self.objects = future_objects
+
+

@@ -91,8 +91,17 @@ def parse_expr(store: IndexStore, exp: List[str]) -> Set[str]:
     return and_result
 
 
-def parse(store: IndexStore, exp: str) -> Set[str]:
+def parse(store: IndexStore, exp: str) :
     """
     parse an expression and return the set of the matched documents
     """
-    return parse_expr(store, exp.lower().split())
+
+    #return parse_expr(store, exp.lower().split())
+
+
+    # index query words
+
+    # return 10 
+
+
+

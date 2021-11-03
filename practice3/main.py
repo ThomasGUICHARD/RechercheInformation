@@ -7,6 +7,7 @@ from optparse import OptionParser
 from graph_cache import StatCache
 from query_parser import parse
 import itertools
+from IndexMode import IndexMode
 
 
 def main():
@@ -99,15 +100,31 @@ def main():
         timer = QuickTime()
         while True:
             query = input("> ")
-            timer.start()
-            answer = parse(index, query)
-            timer.end()
-            print(len(answer), " element(s) in ",
-                  timer.last_time(), "s", sep="")
+            _indexMode = input(
+                "> Choose you indexation mode : \n Boolean (1) \n SMART LTN (2) \n SMART LTC (3) \n BM25 (4)")
+            try:
+                _indexMode = int(_indexMode.strip())
+                timer.start()
+                # SMART LTN case
+                if _indexMode == 2:
+                    index.indexMode = IndexMode.SMART_LTN
+                    for word in sorted(index.objects):
+                        _wordProperties = index.objects[word]
+                        # #Fill in SMART TN Values
+                        _wordProperties.smartLTN_values(word, doc_count)
+                answer = parse(index, query)
+                timer.end()
+                print(len(answer), " element(s) in ",
+                      timer.last_time(), "s", sep="")
 
-            # Print the answers
-            for a in itertools.islice(answer, 10):
-                print("-", a)
+                # Print the answers
+                for a in itertools.islice(answer, 10):
+                    print("-", a)
+
+            except:
+                raise("Verify your indexation mode")
+
+                # If Smart ltn option choosen
 
 
 if __name__ == "__main__":
