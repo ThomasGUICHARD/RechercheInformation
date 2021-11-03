@@ -1,7 +1,7 @@
 from nltk.stem import PorterStemmer
 from typing import Tuple, Generator, Dict
 from timing import logger
-
+import math
 from nltk.corpus import stopwords
 stop_words = set(stopwords.words('english'))
 porter_stemmer = PorterStemmer()
@@ -13,6 +13,23 @@ class IndexObject:
         self.tf: int = 0
         # Term frequency for a document
         self.tdf: Dict[str, int] = dict()
+        self.bm25score: Dict[str, float] = dict()
+
+    def print_bm25(self):
+        for i in self.bm25score.items():
+            print(i)
+
+    def compute_bm25(self,inddoc: 'IndexDoc', colsize: int  ):
+        k = 1
+        b = 0.5
+        bm25tf= 0
+        avdl = colsize/inddoc.nd
+        test =(inddoc.nd - self.tf + 0.5)/(self.tf + 0.5)
+        print(test)
+        bm25idf = math.log10(test)
+        for doc in self.tdf:
+            bm25tf = (self.tdf[doc]*(k+1))/(k*((1-b)+b*inddoc.nw[doc]/avdl)+self.tdf[doc])
+            self.bm25score[doc] = bm25tf*bm25idf
 
     def add_find(self, doc: str) -> None:
         """
@@ -50,6 +67,11 @@ class IndexStore:
     def __init__(self) -> None:
         # term and term data object
         self.objects: Dict[str, IndexObject] = dict()
+
+    def bm25(self,inddoc: 'IndexDoc' ):
+        for word in self.objects:
+            self.objects[word].compute_bm25(inddoc, self.__sizeof__())
+            #self.objects[word].print_bm25()
 
     def fetch_or_create_object(self, word: str) -> IndexObject:
         """
@@ -116,3 +138,23 @@ class IndexStore:
 
         # Set the new store
         self.objects = future_objects
+
+
+class IndexDoc:
+    def __init__(self) -> None:
+        # Number of document
+        self.nd: int = 0
+        # Number of words for a document
+        self.nw: Dict[str, int] = dict()
+
+    def increment_nw(self, docno: str):
+        if docno in self.nw:
+            self.nw[docno] += 1
+        else:
+            self.nw[docno] = 1
+            self.nd += 1
+
+    def print_index(self):
+        print("number of documents = {0}".format(self.nd))
+        for i in self.nw.items():
+            print(i)

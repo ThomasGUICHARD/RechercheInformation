@@ -2,11 +2,13 @@ from os import stat
 import re
 from timing import logger, QuickTime
 from index import IndexStore
+from index import IndexDoc
 from reading import supply_docs
 from optparse import OptionParser
 from graph_cache import StatCache
 from query_parser import parse
 import itertools
+
 
 
 def main():
@@ -37,7 +39,7 @@ def main():
 
     index = IndexStore()
     stats = StatCache(index, options.step)
-
+    indexDoc=IndexDoc()
     # Building index
 
     logger.start()
@@ -57,7 +59,7 @@ def main():
             word = w.lower()
 
             word_count += 1
-
+            indexDoc.increment_nw(docno)
             # Fetch an index object and add a find
             wl = index.fetch_or_create_object(word)
             wl.add_find(docno)
@@ -84,6 +86,8 @@ def main():
     print("Word count:      ", word_count, " word(s)", sep="")
     print("Vocabulary size: ", len(index.objects), " word(s)", sep="")
 
+    indexDoc.print_index()
+    index.bm25(indexDoc)
     # Print index if asked or not enough element
     if doc_count <= 10 or options.index:
         for word in sorted(index.objects):
