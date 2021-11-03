@@ -155,7 +155,29 @@ class IndexStore:
         """
         ex6 compute the smart ltc into the IndexObject.wtd properties
         """
-        pass
+        # precompute the smart ltn into the wtd
+        self.compute_smart_ltn()
+
+        wtdsum: Dict[str, float] = dict()
+
+        # compute the sum for each document
+        for word in self.objects:
+            io = self.objects[word]
+            for doc in io.wtd:
+                if doc in wtdsum:
+                    wtdsum[doc] += io.wtd[doc] ** 2
+                else:
+                    wtdsum[doc] = io.wtd[doc] ** 2
+
+        # compute the square root for each doc
+        for doc in wtdsum:
+            wtdsum[doc] **= 0.5
+
+        # put the new wtd into each index object
+        for word in self.objects:
+            io = self.objects[word]
+            for doc in io.wtd:
+                io.wtd[doc] /= wtdsum[doc]
 
     def compute_bm25(self, k1: float, b: float) -> None:
         """
@@ -169,7 +191,7 @@ class IndexStore:
         """
         words = re.findall("\w+", query)
 
-        rsv = dict()
+        rsv: Dict[str, float] = dict()
 
         # Add for each word the wtd into the rsv for each doc
         for word in words:
