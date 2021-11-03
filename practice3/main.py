@@ -3,12 +3,33 @@ import re
 from timing import logger, QuickTime
 from index import IndexObject, IndexStore
 from reading import supply_docs
-from optparse import OptionParser
+from optparse import OptionParser, Values
 from graph_cache import StatCache
 import query_parser
 import itertools
 
-algorithms = ["bool", "bm25", "ltc", "ltn"]
+algorithms = ["all", "bool", "bm25", "ltc", "ltn"]
+
+
+def compute_algo(algo: str, index: IndexObject, options: Values):
+    if algo == "all" or algo == "bool":
+        return
+
+    logger.write("Computing algorithm " + algo)
+
+    if algo == "ltn":
+        index.compute_smart_ltn()
+    elif algo == "ltc":
+        index.compute_smart_ltc()
+    elif algo == "bm25":
+        index.compute_bm25(options.bm25k1, options.bm25b)
+
+    logger.write(
+        "test ranked retrieval... '" + options.algo_sentence + "'")
+    answer = index.compute_ranked_retrieval_as_list(options.algo_sentence)
+    # Print the answers
+    for a in itertools.islice(answer, 10):
+        print("-", a.doc, "(" + str(a.wtdsum) + ")")
 
 
 def main():
@@ -30,6 +51,8 @@ def main():
 
     parser.add_option("-a", "--algorithm", dest="algo",
                       help="algorithm to use to enter query mode, values: " + " ".join(algorithms), default=algorithms[0])
+    parser.add_option("-A", "--algorithm_sentence", dest="algo_sentence",
+                      help="algorithm try value", default="web ranking scoring algorithm")
 
     parser.add_option("-B", "--bm25b", dest="bm25b", type="float",
                       help="value of b if --algorithm=bm25", default=0.75)
@@ -82,23 +105,12 @@ def main():
     if options.stemmer:
         index.apply_stemmer()
 
-    if options.algo != "bool":
-        logger.write("Computing algorithm " + options.algo)
-
-        if options.algo == "ltn":
-            index.compute_smart_ltn()
-        elif options.algo == "ltc":
-            index.compute_smart_ltc()
-        elif options.algo == "bm25":
-            index.compute_bm25(options.bm25k1, options.bm25b)
-
-        logger.write(
-            "test ranked retrieval... 'web ranking scoring algorithm'")
-        answer = index.compute_ranked_retrieval_as_list(
-            "web ranking scoring algorithm")
-        # Print the answers
-        for a in itertools.islice(answer, 10):
-            print("-", a.doc, "(" + str(a.wtdsum) + ")")
+    # Practice 3 - wdf
+    if options.algo == "all":
+        for algo in algorithms:
+            compute_algo(algo, index, options)
+    elif options.algo != "bool":
+        compute_algo(options.algo, index, options)
 
     logger.write("Completed...")
 
