@@ -1,0 +1,68 @@
+Exo 1 :
+1. WITH STOP WORDS AND WITHOUT STEMMING
+
+
+[0.000s] Starting...
+[0.000s] Reading Text_Only_Ascii_Coll_NoSem...
+[18.149s] Reading completed
+[18.149s] Completed...
+
+Indexing time:   18.149315513s
+Doc count:       9804 doc(s)
+Word count:      11699504 word(s)
+Vocabulary size: 277357 word(s)
+List avoided because doc count > 10
+
+
+2. WITH STOP WORDS AND STEMMING
+
+[0.000s] Starting...
+[0.000s] Reading Text_Only_Ascii_Coll_NoSem...
+[16.341s] Reading completed
+[16.341s] Applying stemmer...
+[21.688s] Completed...
+
+Indexing time:   21.687910002s
+Doc count:       9804 doc(s)
+Word count:      11699504 word(s)
+Vocabulary size: 238736 word(s)
+List avoided because doc count > 10
+
+
+
+EXO 2 
+
+1. WITHOUT STOP WORDS NEITHER STEMMING
+
+
+[0.000s] Starting...
+[0.000s] Reading Text_Only_Ascii_Coll_NoSem...
+[17.010s] Reading completed
+[17.010s] Removing stopwords...
+[17.018s] Completed...
+
+Indexing time:   17.017652836s
+Doc count:       9804 doc(s)
+Word count:      11699504 word(s)
+Vocabulary size: 277206 word(s)
+List avoided because doc count > 10
+
+
+EXO 3 
+
+1. WITHOUT STOP WORDS AND WITH STEMMING
+
+[0.000s] Starting...
+[0.000s] Reading Text_Only_Ascii_Coll_NoSem...
+[17.510s] Reading completed
+[17.510s] Removing stopwords...
+[17.518s] Applying stemmer...
+[22.821s] Completed...
+
+Indexing time:   22.821525013s
+Doc count:       9804 doc(s)
+Word count:      11699504 word(s)
+Vocabulary size: 238667 word(s)
+List avoided because doc count > 10
+
+4. TODO (En cours ...)
