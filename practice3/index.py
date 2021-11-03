@@ -171,7 +171,7 @@ class IndexStore:
 
         rsv = dict()
 
-        # Add for each
+        # Add for each word the wtd into the rsv for each doc
         for word in words:
             if word in self.objects:
                 wtd = self.objects[word].wtd
