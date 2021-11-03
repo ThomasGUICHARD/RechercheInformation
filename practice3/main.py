@@ -88,7 +88,7 @@ def main():
     if doc_count <= 10 or options.index:
         for word in sorted(index.objects):
             io = index.objects[word]
-            print("{0}=df({1})".format(io.df, word))
+            print("{0}=df({1})".format(io.get_document_frequency(), word))
             for tf, doc in index.tf_doc_of_object(word):
                 print("\t{0} {1}".format(tf, doc))
     else:
