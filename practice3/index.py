@@ -18,15 +18,15 @@ class IndexObject:
         """
         notice this term was found in the document doc
         """
-        # Increase number of time the term is found
-        self.df += 1
+        
 
         # Increase the number of time for this document by one
         if doc in self.tf:
             self.tf[doc] += 1
         else:
             self.tf[doc] = 1
-
+			# Increase number of time the term is found
+			self.df += 1
     def merge_with(self, index2: 'IndexObject') -> None:
         """
         merge another IndexObject into this one
