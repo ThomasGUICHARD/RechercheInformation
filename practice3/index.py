@@ -1,10 +1,13 @@
 import re
 from math import log10
+import enum
 from nltk.stem import PorterStemmer
 from typing import List, Tuple, Generator, Dict
 from timing import logger
-
+from math import log10
 from nltk.corpus import stopwords
+from IndexMode import IndexMode 
+from math import sqrt
 stop_words = set(stopwords.words('english'))
 porter_stemmer = PorterStemmer()
 
@@ -18,6 +21,8 @@ class IndexObject:
         # future w_{t,d}, require computing
         self.wtd: Dict[str, float] = dict()
 
+        self.smart_ltn = {}  # {"docno":value}
+        self.smart_ltc = {}  # {"docno":value}
     def add_find(self, doc: str) -> None:
         """
         notice this term was found in the document doc
@@ -49,6 +54,30 @@ class IndexObject:
             else:
                 self.tdf[doc] = index2.tdf[doc]
 
+    def smartLTN_values(self, doc_count, index , mode_ltc):
+        """
+        Set Smart LTN Value of the term associated to document docno
+        """
+        for _document in self.tdf:
+            ltn_w=(
+                1 + log10(self.tdf[_document]))*(log10(doc_count/self.get_document_frequency()))
+            self.smart_ltn.update({_document: ltn_w})
+            if mode_ltc:
+                if _document in index.tmp_sum_ltc:
+                    index.tmp_sum_ltc[_document]=index.tmp_sum_ltc[_document] + ltn_w ** 2
+                else:
+                    index.tmp_sum_ltc.update({_document:ltn_w ** 2 })
+        
+            
+    def smartLTC_values(self, index):
+        """
+        Set Smart LTC Value of the term associated to document
+
+        """
+        for _doc in self.smart_ltn:
+            if _doc in index.tmp_sum_ltc:
+                
+                self.smart_ltc.update({_doc:self.smart_ltn[_doc] / sqrt(index.tmp_sum_ltc[_doc])}) 
 
 class RankedRetrivialAnswer:
     def __init__(self, wtdsum: float, doc: str) -> None:
@@ -62,6 +91,10 @@ class IndexStore:
         self.objects: Dict[str, IndexObject] = dict()
         self.doc_size: Dict[str, int] = dict()
 
+        self.indexMode=IndexMode.BOOLEAN
+        self.tmp_sum_ltc={}# {"word": sum}
+        self.queryTermManager={}  # {"word": frequency}
+        self.RSV={} # {"DocNum" : score}
     def fetch_or_create_object(self, word: str) -> IndexObject:
         """
         Fetch or create an index object for a certain word
@@ -252,3 +285,15 @@ class IndexStore:
         rsv.sort(key=lambda a: a.wtdsum, reverse=True)
 
         return rsv
+    def setQueryTermFrequency(self,queryWord):
+
+        """
+        Set Term frequency of the query words
+        """
+        if queryWord in self.queryTermManager:
+            self.queryTermManager[queryWord] += 1
+        else :
+            self.queryTermManager[queryWord]=1 
+        
+
+

@@ -5,8 +5,9 @@ from index import IndexObject, IndexStore
 from reading import supply_docs
 from optparse import OptionParser, Values
 from graph_cache import StatCache
-import query_parser
+from  query_parser import parse
 import itertools
+from IndexMode import IndexMode
 
 algorithms = ["all", "bool", "bm25", "ltc", "ltn"]
 
@@ -81,8 +82,9 @@ def main():
     doc_count = 0
     # Number of word for this session
     word_count = 0
-
+    _docIdList=[]
     for docno, doctext in supply_docs(args):
+        _docIdList.append(docno)
         doc_count += 1
         # Fetch all the words
         words = re.findall('\w+', doctext)
@@ -139,20 +141,40 @@ def main():
         timer = QuickTime()
         while True:
             query = input("> ")
-            timer.start()
-            if options.algo != "bool":
-                answer = [
-                    a.doc + " (" + str(a.wtdsum) + ")" for a in index.compute_ranked_retrieval_as_list(query)]
-            else:
-                answer = query_parser.parse(index, query)
-            timer.end()
-            print(len(answer), " element(s) in ",
-                  timer.last_time(), "s", sep="")
+            
+            #Quit the search engine 
+            if query.strip().lower() == "clear":
+                break
+                
+            _indexMode = input(
+                "\n> Choose you indexation mode : \n Boolean (1) \n SMART LTN (2) \n SMART LTC (3) \n BM25 (4) \n\n >your answer : ")
+            try:
 
-            # Print the answers
-            for a in itertools.islice(answer, 10):
-                print("-", a)
+                _indexMode = int(_indexMode.strip())
+                timer.start()
+                for word in sorted(index.objects):
+                    _wordProperties = index.objects[word]
+                    # SMART LTN case
+                    if _indexMode == 2 or _indexMode == 3:
+                        index.indexMode = IndexMode.SMART_LTN if _indexMode == 2 else IndexMode.SMART_LTC 
+                        #Fill in SMART LTN Values
+                        _wordProperties.smartLTN_values(doc_count,index, True if _indexMode == 3 else False ) 
+                        if _indexMode == 3:
+                            #Fill in SMART LTC Values
+                            _wordProperties.smartLTC_values(index)
+                
+                    
+                answer = parse(index, query.lower(),_docIdList )
+                timer.end()
+                print(len(answer), " element(s) in ",
+                      timer.last_time(), "s", sep="")
+                print("\n List of returned documents with {} mode : \n ".format(index.indexMode.name))
+                # Print the answers
+                for _id,_result in enumerate(answer):
+                    print(" {}) DOC : {} | rsv : {} ".format(_id+1,_result,answer[_result]))
 
+            except:
+                raise("Verify your indexation mode")
 
 if __name__ == "__main__":
     main()
