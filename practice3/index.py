@@ -48,7 +48,7 @@ class IndexObject:
             else:
                 self.tdf[doc] = index2.tdf[doc]
 
-    def smartLTN_values(self, word, doc_count):
+    def smartLTN_values(self, doc_count):
         """
         Set Smart Tn Value of the $word associated to document docno in $list_docs
         """
@@ -62,6 +62,8 @@ class IndexStore:
         # term and term data object
         self.objects: Dict[str, IndexObject] = dict()
         self.indexMode=IndexMode.BOOLEAN
+        self.queryTermManager={}  # {"word": frequency}
+        self.RSV={} # {"DocNum" : score}
     def fetch_or_create_object(self, word: str) -> IndexObject:
         """
         Fetch or create an index object for a certain word
@@ -127,5 +129,16 @@ class IndexStore:
 
         # Set the new store
         self.objects = future_objects
+
+    def setQueryTermFrequency(self,queryWord):
+
+        """
+        Set Term frequency of the query words
+        """
+        if queryWord in self.queryTermManager:
+            self.queryTermManager[queryWord] += 1
+        else :
+            self.queryTermManager[queryWord]=1 
+        
 
 

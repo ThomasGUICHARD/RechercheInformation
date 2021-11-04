@@ -49,8 +49,9 @@ def main():
     doc_count = 0
     # Number of word for this session
     word_count = 0
-
+    _docIdList=[]
     for docno, doctext in supply_docs(args):
+        _docIdList.append(docno)
         doc_count += 1
         # Fetch all the words
         words = re.findall('\w+', doctext)
@@ -100,9 +101,15 @@ def main():
         timer = QuickTime()
         while True:
             query = input("> ")
+            
+            #Quit the search engine 
+            if query.strip().lower() == "clear":
+                break
+                
             _indexMode = input(
-                "> Choose you indexation mode : \n Boolean (1) \n SMART LTN (2) \n SMART LTC (3) \n BM25 (4)")
+                "\n> Choose you indexation mode : \n Boolean (1) \n SMART LTN (2) \n SMART LTC (3) \n BM25 (4) \n\n >your answer : ")
             try:
+
                 _indexMode = int(_indexMode.strip())
                 timer.start()
                 # SMART LTN case
@@ -111,21 +118,19 @@ def main():
                     for word in sorted(index.objects):
                         _wordProperties = index.objects[word]
                         # #Fill in SMART TN Values
-                        _wordProperties.smartLTN_values(word, doc_count)
-                answer = parse(index, query)
+                        _wordProperties.smartLTN_values(doc_count)
+                answer = parse(index, query.lower(),_docIdList )
                 timer.end()
                 print(len(answer), " element(s) in ",
                       timer.last_time(), "s", sep="")
 
                 # Print the answers
-                for a in itertools.islice(answer, 10):
-                    print("-", a)
+                for _id,_result in enumerate(answer):
+                    print(" {}) DOC : {} | rsv : {} ".format(_id+1,_result,answer[_result]))
+                     
 
             except:
                 raise("Verify your indexation mode")
-
-                # If Smart ltn option choosen
-
 
 if __name__ == "__main__":
     main()

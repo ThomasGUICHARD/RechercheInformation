@@ -1,4 +1,6 @@
 Exo 1 :
+
+
 1. WITH STOP WORDS AND WITHOUT STEMMING
 
 
@@ -65,4 +67,39 @@ Word count:      11699504 word(s)
 Vocabulary size: 238667 word(s)
 List avoided because doc count > 10
 
-4. TODO (En cours ...)
+Exo 5 :
+
+
+[0.000s] Starting...
+[0.000s] Reading Text_Only_Ascii_Coll_NoSem...
+[18.622s] Reading completed
+[18.623s] Completed...
+
+Indexing time:   18.62254533s
+Doc count:       9804 doc(s)
+Word count:      11699504 word(s)
+Vocabulary size: 277357 word(s)
+List avoided because doc count > 10
+>  web ranking scoring algorithm 
+
+> Choose you indexation mode : 
+ Boolean (1) 
+ SMART LTN (2) 
+ SMART LTC (3) 
+ BM25 (4) 
+
+ >your answer : 2
+10 element(s) in 5.8630689520000026s
+ 1) DOC : 23724 | rsv : 7.1313272291347545 
+ 2) DOC : 448834 | rsv : 6.1210037661072185 
+ 3) DOC : 207747 | rsv : 5.778708169158351 
+ 4) DOC : 18336216 | rsv : 5.704868200715063 
+ 5) DOC : 2292623 | rsv : 5.327011664210744 
+ 6) DOC : 2606518 | rsv : 5.248188732020951 
+ 7) DOC : 6861556 | rsv : 5.225724549344589 
+ 8) DOC : 18963457 | rsv : 5.205531443986972 
+ 9) DOC : 363695 | rsv : 5.196984869130263 
+ 10) DOC : 719095 | rsv : 5.152116958466727 
+> 
+
+
