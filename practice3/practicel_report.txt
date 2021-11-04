@@ -67,7 +67,7 @@ Word count:      11699504 word(s)
 Vocabulary size: 238667 word(s)
 List avoided because doc count > 10
 
-Exo 5 :
+Exo 5 : LTN
 
 
 [0.000s] Starting...
@@ -102,4 +102,39 @@ List avoided because doc count > 10
  10) DOC : 719095 | rsv : 5.152116958466727 
 > 
 
+Exo 6 et 7  LTC
+
+[0.000s] Starting...
+[0.000s] Reading Text_Only_Ascii_Coll_NoSem...
+[19.373s] Reading completed
+[19.373s] Completed...
+
+Indexing time:   19.373123595s
+Doc count:       9804 doc(s)
+Word count:      11699504 word(s)
+Vocabulary size: 277357 word(s)
+List avoided because doc count > 10
+>  web ranking scoring algorithm 
+
+> Choose you indexation mode : 
+ Boolean (1) 
+ SMART LTN (2) 
+ SMART LTC (3) 
+ BM25 (4) 
+
+ >your answer : 3
+10 element(s) in 11.141374818000003s
+
+ List of returned documents with SMART_LTC mode : 
+ 
+ 1) DOC : 9981737 | rsv : 0.30751531553651323 
+ 2) DOC : 10416781 | rsv : 0.2858668207839292 
+ 3) DOC : 13771790 | rsv : 0.2742018741196172 
+ 4) DOC : 8080270 | rsv : 0.26908048048554073 
+ 5) DOC : 17303714 | rsv : 0.24956510941133409 
+ 6) DOC : 2363262 | rsv : 0.23808174501975118 
+ 7) DOC : 4839372 | rsv : 0.2282032663313796 
+ 8) DOC : 6843345 | rsv : 0.22485841469108092 
+ 9) DOC : 2565404 | rsv : 0.22480611745787377 
+ 10) DOC : 5822019 | rsv : 0.22413355635718835 
 

@@ -112,22 +112,26 @@ def main():
 
                 _indexMode = int(_indexMode.strip())
                 timer.start()
-                # SMART LTN case
-                if _indexMode == 2:
-                    index.indexMode = IndexMode.SMART_LTN
-                    for word in sorted(index.objects):
-                        _wordProperties = index.objects[word]
-                        # #Fill in SMART TN Values
-                        _wordProperties.smartLTN_values(doc_count)
+                for word in sorted(index.objects):
+                    _wordProperties = index.objects[word]
+                    # SMART LTN case
+                    if _indexMode == 2 or _indexMode == 3:
+                        index.indexMode = IndexMode.SMART_LTN if _indexMode == 2 else IndexMode.SMART_LTC 
+                        #Fill in SMART LTN Values
+                        _wordProperties.smartLTN_values(doc_count,index, True if _indexMode == 3 else False ) 
+                        if _indexMode == 3:
+                            #Fill in SMART LTC Values
+                            _wordProperties.smartLTC_values(index)
+                
+                    
                 answer = parse(index, query.lower(),_docIdList )
                 timer.end()
                 print(len(answer), " element(s) in ",
                       timer.last_time(), "s", sep="")
-
+                print("\n List of returned documents with {} mode : \n ".format(index.indexMode.name))
                 # Print the answers
                 for _id,_result in enumerate(answer):
                     print(" {}) DOC : {} | rsv : {} ".format(_id+1,_result,answer[_result]))
-                     
 
             except:
                 raise("Verify your indexation mode")

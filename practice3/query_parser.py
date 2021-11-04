@@ -4,6 +4,8 @@ from index import IndexStore
 import re
 import operator
 import itertools
+
+from IndexMode import IndexMode
 def locate_end_parenthesis(exp: List[str], start: int) -> int:
     """
     locate the next parenthesis index, raise an exception if no next parenthesis is found
@@ -113,8 +115,10 @@ def parse(store: IndexStore, exp: str, docs) :
         _rsv=0
         for _qterm in store.queryTermManager:
             _qwordProp=store.objects[_qterm]
-            if _docNum in list(_qwordProp.smart_ltn.keys()):
+            if store.indexMode== IndexMode.SMART_LTN and _docNum in list(_qwordProp.smart_ltn.keys()):
                 _rsv= _rsv + ( _qwordProp.smart_ltn[_docNum] * store.queryTermManager[_qterm] )
+            if store.indexMode== IndexMode.SMART_LTC and _docNum in list(_qwordProp.smart_ltc.keys()):
+                _rsv= _rsv + ( _qwordProp.smart_ltc[_docNum] * store.queryTermManager[_qterm] )
         store.RSV.update({_docNum: _rsv}) 
             
 
