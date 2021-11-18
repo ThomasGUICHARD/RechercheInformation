@@ -1,5 +1,5 @@
 
 output
-
+document/*.zip
 *.bin
 __pycache__/
