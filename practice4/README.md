@@ -111,3 +111,22 @@ answers or 10 answers if algo = bool
 - 5018563 (4.59750547376847)
 - 10535584 (4.597065554644773)
 ```
+## Compute retieve Liste document INEX
+
+You can use this option by typing one of these commandes : 
+
+```bash
+python3 main.py Text_Only_Ascii_Coll_NoSem -r --ifile=./topics_M2DSC_7Q.txt --dfile=./runs/ -s -w
+```
+
+```bash
+python3 main.py Text_Only_Ascii_Coll_NoSem -r --ifile=./topics_M2DSC_7Q.txt --dfile=./runs/ -s
+```
+
+```bash
+python3 main.py Text_Only_Ascii_Coll_NoSem -r --ifile=./topics_M2DSC_7Q.txt --dfile=./runs/ -w
+```
+
+```bash
+python3 main.py Text_Only_Ascii_Coll_NoSem -r --ifile=./topics_M2DSC_7Q.txt --dfile=./runs/
+```
