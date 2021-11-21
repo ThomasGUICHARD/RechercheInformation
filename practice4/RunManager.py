@@ -21,6 +21,7 @@ class RunManager(object):
                            IndexMode.SMART_LTC]  # TODO : add BM25
 
     def run(self):
+        "Run the retrieval document listing"
         _lines = self.readFile()
         self.computeLTN_LTC()
         _indexTerms = list(self.index.objects.keys())
@@ -57,9 +58,11 @@ class RunManager(object):
                     _f.write(_topicId+" Q0 "+ _doc+" "+str(_documentRank+1)+" "+str(_dic[_doc])+" "+self.groupId+_algo.name+" /article[1]\n")
                     _f.close()
     def readFile(self):
+        "Read topic file "
         _file = open(self.options.topics, 'r')
         return _file.readlines()
     def computeLTN_LTC(self):
+        "Compute Smart LTN and LTC"
         for word in sorted(self.index.objects):
             _wordProperties = self.index.objects[word]
             # Fill in SMART LTN Values
