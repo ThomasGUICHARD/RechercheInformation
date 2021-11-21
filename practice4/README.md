@@ -8,18 +8,21 @@ Options:
   -w, --stopwords       remove stopwords
   -q, --query           open query mode
   -i, --index           show index
-  -o OUTPUT_DIR, --output_dir=OUTPUT_DIR
-                        data output dir
+  -o DPATH, --dfile=DPATH
+                        Path to runs files stats
   -S STEP, --step=STEP  step for stats
+  -r, --retrieve        Retrieve list docs
   -a ALGO, --algorithm=ALGO
-                        algorithm to use to enter query mode, values: all
-                        bool bm25 ltc ltn
-  -A ALGO_SENTENCE, --algorithm_sentence="web ranking scoring algorithm"
+                        algorithm to use to enter query mode, values: all bool
+                        bm25 ltc ltn
+  -A ALGO_SENTENCE, --algorithm_sentence=ALGO_SENTENCE
                         algorithm try value
-  -B BM25B, --bm25b=0.75
+  -B BM25B, --bm25b=BM25B
                         value of b if --algorithm=bm25
-  -K BM25K1, --bm25k1=1.2
+  -K BM25K1, --bm25k1=BM25K1
                         value of k1 if --algorithm=bm25
+  -f TOPICS, --ifile=TOPICS
+                        Path to topic file
 ```
 
 ## Compute algorithm
