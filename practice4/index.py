@@ -1,12 +1,15 @@
 import re
 from math import log10
 from nltk.stem import PorterStemmer
-from typing import List, Tuple, Generator, Dict
+from typing import Callable, List, Set, Tuple, Generator, Dict
 from timing import logger
 
 from nltk.corpus import stopwords
 stop_words = set(stopwords.words('english'))
-porter_stemmer = PorterStemmer()
+porter_stemmer = PorterStemmer().stem
+
+
+def identity(a): return a
 
 
 class IndexObject:
@@ -61,6 +64,7 @@ class IndexStore:
         # term and term data object
         self.objects: Dict[str, IndexObject] = dict()
         self.doc_size: Dict[str, int] = dict()
+        self.last_stemmer = identity
 
     def fetch_or_create_object(self, word: str) -> IndexObject:
         """
@@ -96,16 +100,20 @@ class IndexStore:
             return self.objects[word].tdf
         return dict()
 
-    def remove_stopwords(self):
+    def remove_stopwords(self, stop: Set[str] = None):
         """
         (part 3), remove the stopwords of the store
         """
         logger.write("Removing stopwords...")
-        for word in stop_words:
+
+        if stop == None:
+            stop = stop_words
+
+        for word in stop:
             if word in self.objects:
                 del self.objects[word]
 
-    def apply_stemmer(self):
+    def apply_stemmer(self, stemmer: Callable[[str], str] = None):
         """
         (part 4), apply the stemmer on all the word using a O(n) merge algorithm
         """
@@ -114,10 +122,13 @@ class IndexStore:
         # TODO: duplicate the size of the heap, find a better way
         future_objects = dict()
 
+        if stemmer == None:
+            stemmer = porter_stemmer
+
         for word in self.objects:
             # Fetch the object
             obj = self.objects[word]
-            w = porter_stemmer.stem(word)
+            w = stemmer(word)
 
             # If it can be merge with another word already in the future store, merge it
             if w in future_objects:
@@ -127,6 +138,7 @@ class IndexStore:
 
         # Set the new store
         self.objects = future_objects
+        self.last_stemmer = stemmer
 
     def add_word(self, doc: str, word: str) -> None:
         """
@@ -228,6 +240,7 @@ class IndexStore:
 
         # Add for each word the wtd into the rsv for each doc
         for word in words:
+            word = self.last_stemmer(word)
             if word in self.objects:
                 wtd = self.objects[word].wtd
                 for doc in wtd:
