@@ -92,7 +92,7 @@ class RunResultProducer:
         stemmer_name, stemmer = stem.value
 
         # TeamName_Run-Id_WeigthingFunction_Granularity_Stop_Stem_Parameters.txt
-        file_name = f"{self.team_name}_{run_id}_{algo.value}_{granularity.value}_{stop_fn}_{stemmer_name}{params}.txt"
+        file_name = f"runs/{self.team_name}_{run_id}_{algo.value}_{granularity.value}_{stop_fn}_{stemmer_name}{params}.txt"
 
         logger.start()
         logger.write(f"Starting file {file_name}...")

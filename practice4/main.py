@@ -9,6 +9,8 @@ import query_parser
 import itertools
 from run_result import Granularity, Stop, Stem, RunResultProducer
 from algorithms import ALGO_LIST, Algorithms
+import os
+import numpy
 
 
 def compute_algo(algo: Algorithms, index: IndexObject, options: Values):
@@ -94,6 +96,7 @@ def main():
     algo = Algorithms(options.algo)
 
     if options.run:
+        os.makedirs("runs", exist_ok=True)
         producer = RunResultProducer("NassimAntoineThomasMelanie")
         logger.start()
         logger.write("Running index...")
@@ -113,13 +116,6 @@ def main():
         producer.produce_result(
             index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.NO_STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False)
 
-        producer.produce_result(
-            index, Algorithms.ALGO_LTC, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=True)
-        producer.produce_result(
-            index, Algorithms.ALGO_LTN, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False)
-        producer.produce_result(
-            index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False)
-
         logger.start()
         logger.write("Running index...")
         index, _, _ = run_index(args)
@@ -131,6 +127,28 @@ def main():
             index, Algorithms.ALGO_LTN, Granularity.ARTICLE, Stop.STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=False)
         producer.produce_result(
             index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=False)
+
+        producer.produce_result(
+            index, Algorithms.ALGO_LTC, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=True, apply_stop_words=False)
+        producer.produce_result(
+            index, Algorithms.ALGO_LTN, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False)
+        producer.produce_result(
+            index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False)
+
+        # 12 examples
+
+        for b in numpy.linspace(0.0, 1.0, 11):
+            producer.produce_result(
+                index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False, bm25_b=b, bm25_k=1.2)
+
+        # 23 examples
+
+        for k in numpy.linspace(0.0, 4.0, 21):
+            producer.produce_result(
+                index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False, bm25_b=0.75, bm25_k=k)
+
+        # 44 examples
+        # 6 ideas ?
     else:
         # locate end parenthesis of boolean expression
         logger.start()
