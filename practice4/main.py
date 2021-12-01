@@ -7,21 +7,20 @@ from optparse import OptionParser, Values
 from graph_cache import StatCache
 import query_parser
 import itertools
+from algorithms import ALGO_LIST, Algorithms
 
-algorithms = ["all", "bool", "bm25", "ltc", "ltn"]
 
-
-def compute_algo(algo: str, index: IndexObject, options: Values):
-    if algo == "all" or algo == "bool":
+def compute_algo(algo: Algorithms, index: IndexObject, options: Values):
+    if algo == Algorithms.ALGO_ALL or algo == Algorithms.ALGO_BOOL:
         return
 
-    logger.write("Computing algorithm " + algo)
+    logger.write("Computing algorithm " + algo.value)
 
-    if algo == "ltn":
+    if algo == Algorithms.ALGO_LTN:
         index.compute_smart_ltn()
-    elif algo == "ltc":
+    elif algo == Algorithms.ALGO_LTC:
         index.compute_smart_ltc()
-    elif algo == "bm25":
+    elif algo == Algorithms.ALGO_BM25:
         index.compute_bm25(options.bm25k1, options.bm25b)
 
     logger.write(
@@ -50,7 +49,7 @@ def main():
                       help="step for stats", default=1000)
 
     parser.add_option("-a", "--algorithm", dest="algo",
-                      help="algorithm to use to enter query mode, values: " + " ".join(algorithms), default=algorithms[0])
+                      help="algorithm to use to enter query mode, values: " + " ".join(ALGO_LIST), default=Algorithms.ALGO_ALL)
     parser.add_option("-A", "--algorithm_sentence", dest="algo_sentence",
                       help="algorithm try value", default="web ranking scoring algorithm")
 
@@ -62,9 +61,11 @@ def main():
 
     options, args = parser.parse_args()
 
-    if len(args) < 1 or options.algo not in algorithms:
+    if len(args) < 1 or options.algo not in ALGO_LIST:
         parser.print_usage()
         return
+
+    algo = Algorithms(options.algo)
 
     # locate end parenthesis of boolean expression
 
@@ -106,11 +107,11 @@ def main():
         index.apply_stemmer()
 
     # Practice 3 - wdf
-    if options.algo == "all":
-        for algo in algorithms:
-            compute_algo(algo, index, options)
-    elif options.algo != "bool":
-        compute_algo(options.algo, index, options)
+    if algo == Algorithms.ALGO_ALL:
+        for alg in Algorithms:
+            compute_algo(alg, index, options)
+    elif algo != Algorithms.ALGO_BOOL:
+        compute_algo(algo, index, options)
 
     logger.write("Completed...")
 
@@ -140,7 +141,7 @@ def main():
         while True:
             query = input("> ")
             timer.start()
-            if options.algo != "bool":
+            if algo != Algorithms.ALGO_BOOL:
                 answer = [
                     a.doc + " (" + str(a.wtdsum) + ")" for a in index.compute_ranked_retrieval_as_list(query)]
             else:
