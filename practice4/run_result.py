@@ -58,7 +58,7 @@ class RunResultProducer:
         self.team_name = team_name
         self.base_id = 0
 
-    def produce_result(self, index: IndexStore, algo: Algorithms, granularity: Granularity, stop: Stop, stem: Stem, queries: List[Tuple[str, str]] = None, bm25_k: float = DEFAULT_BM25_K, bm25_b: float = DEFAULT_BM25_B, stop_set: Set[str] = None, articles: int = 1500) -> None:
+    def produce_result(self, index: IndexStore, algo: Algorithms, granularity: Granularity, stop: Stop, stem: Stem, queries: List[Tuple[str, str]] = None, bm25_k: float = DEFAULT_BM25_K, bm25_b: float = DEFAULT_BM25_B, stop_set: Set[str] = None, articles: int = 1500, apply_stemmer: bool = True, apply_stop_words: bool = True) -> None:
         """
         produce_result into a file, this method will update the store, if queries = None, DEFAULT_QUERIES is used
         """
@@ -98,12 +98,10 @@ class RunResultProducer:
         logger.write(f"Starting file {file_name}...")
 
         # prepare store
-        if stop != Stop.NO_STOP:
-            logger.write("removing stopwords...")
+        if stop != Stop.NO_STOP and apply_stop_words:
             index.remove_stopwords(stop_set)
 
-        if stem != Stem.NO_STEM:
-            logger.write("applying stemmer...")
+        if stem != Stem.NO_STEM and apply_stemmer:
             index.apply_stemmer(stemmer)
 
         if algo == Algorithms.ALGO_BM25:
