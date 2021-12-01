@@ -1,5 +1,11 @@
 # Recherche d'information
 
+## Check good runs
+
+```powershell
+ls runs/Nassim* | ForEach-Object {(cat $_ | Measure-Object -Line).Lines}
+```
+
 ```
 Usage: python main.py (filename+)
 Options:

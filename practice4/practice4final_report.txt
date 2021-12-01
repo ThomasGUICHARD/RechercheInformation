@@ -1,0 +1,560 @@
+To run the program python main.py (name of the file to index) --runs
+
+It will produce 44 files into the runs/ directory
+
+To create a custom environement in python with the required dependencies:
+
+Windows (Powershell)
+
+python -m venv .venv
+.venv/Scripts/activate.ps1
+python -m pip install -r requirements.txt
+
+Unix (Bash)
+
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+
+
+Example of a run:
+
+(.venv) Antoine:H:\Vuze Downloads\data\ri\RechercheInformation\practice4 (atian)> python .\main.py ..\..\archive\Practice_03_data\Text_Only_Ascii_Coll_NoSem.zip --runs
+[0.000s] Running index...
+[0.000s] Reading Text_Only_Ascii_Coll_NoSem.zip\Text_Only_Ascii_Coll_NoSem...
+[24.641s] Reading completed
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_0_ltc_articles_nostop_nostem.txt...
+[5.953s] (0) 2009011 'olive oil health benefit'
+[5.953s] (1) 2009036 'notting hill film actors'
+[5.969s] (2) 2009067 'probabilistic models in information retrieval'
+[5.984s] (3) 2009073 'web link network analysis'
+[6.000s] (4) 2009074 'web ranking scoring algorithm'
+[6.000s] (5) 2009078 'supervised machine learning algorithm'
+[6.000s] (6) 2009085 'operating system +mutual +exclusion'
+[6.000s] Writing file...
+[6.000s]
+[6.562s] line 10499...[6.562s] Completed runs/NassimAntoineThomasMelanie_0_ltc_articles_nostop_nostem.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_1_ltn_articles_nostop_nostem.txt...
+[2.594s] (0) 2009011 'olive oil health benefit'
+[2.594s] (1) 2009036 'notting hill film actors'
+[2.609s] (2) 2009067 'probabilistic models in information retrieval'
+[2.625s] (3) 2009073 'web link network analysis'
+[2.625s] (4) 2009074 'web ranking scoring algorithm'
+[2.641s] (5) 2009078 'supervised machine learning algorithm'
+[2.656s] (6) 2009085 'operating system +mutual +exclusion'
+[2.656s] Writing file...
+[2.656s]
+[3.234s] line 10499...[3.234s] Completed runs/NassimAntoineThomasMelanie_1_ltn_articles_nostop_nostem.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_2_bm25_articles_nostop_nostem_k1.2_b0.75.txt...
+[2.438s] (0) 2009011 'olive oil health benefit'
+[2.438s] (1) 2009036 'notting hill film actors'
+[2.438s] (2) 2009067 'probabilistic models in information retrieval'
+[2.453s] (3) 2009073 'web link network analysis'
+[2.469s] (4) 2009074 'web ranking scoring algorithm'
+[2.484s] (5) 2009078 'supervised machine learning algorithm'
+[2.484s] (6) 2009085 'operating system +mutual +exclusion'
+[2.500s] Writing file...
+[2.500s]
+[3.094s] line 10499...[3.094s] Completed runs/NassimAntoineThomasMelanie_2_bm25_articles_nostop_nostem_k1.2_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_3_ltc_articles_nostop_porter.txt...
+[0.000s] Applying stemmer...
+[10.953s] (0) 2009011 'olive oil health benefit'
+[10.969s] (1) 2009036 'notting hill film actors'
+[10.984s] (2) 2009067 'probabilistic models in information retrieval'
+[11.141s] (3) 2009073 'web link network analysis'
+[11.156s] (4) 2009074 'web ranking scoring algorithm'
+[11.172s] (5) 2009078 'supervised machine learning algorithm'
+[11.188s] (6) 2009085 'operating system +mutual +exclusion'
+[11.203s] Writing file...
+[11.203s]
+[11.859s] line 10499...[11.859s] Completed runs/NassimAntoineThomasMelanie_3_ltc_articles_nostop_porter.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_4_ltn_articles_nostop_porter.txt...
+[2.172s] (0) 2009011 'olive oil health benefit'
+[2.188s] (1) 2009036 'notting hill film actors'
+[2.203s] (2) 2009067 'probabilistic models in information retrieval'
+[2.219s] (3) 2009073 'web link network analysis'
+[2.250s] (4) 2009074 'web ranking scoring algorithm'
+[2.266s] (5) 2009078 'supervised machine learning algorithm'
+[2.266s] (6) 2009085 'operating system +mutual +exclusion'
+[2.281s] Writing file...
+[2.281s]
+[2.922s] line 10499...[2.922s] Completed runs/NassimAntoineThomasMelanie_4_ltn_articles_nostop_porter.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_5_bm25_articles_nostop_porter_k1.2_b0.75.txt...
+[2.141s] (0) 2009011 'olive oil health benefit'
+[2.141s] (1) 2009036 'notting hill film actors'
+[2.156s] (2) 2009067 'probabilistic models in information retrieval'
+[2.172s] (3) 2009073 'web link network analysis'
+[2.203s] (4) 2009074 'web ranking scoring algorithm'
+[2.219s] (5) 2009078 'supervised machine learning algorithm'
+[2.234s] (6) 2009085 'operating system +mutual +exclusion'
+[2.359s] Writing file...
+[2.359s]
+[2.953s] line 10499...[2.953s] Completed runs/NassimAntoineThomasMelanie_5_bm25_articles_nostop_porter_k1.2_b0.75.txt...
+
+[0.000s] Running index...
+[0.000s] Reading Text_Only_Ascii_Coll_NoSem.zip\Text_Only_Ascii_Coll_NoSem...
+[25.609s] Reading completed
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_6_ltc_articles_stop179_nostem.txt...
+[0.000s] Removing stopwords...
+[5.281s] (0) 2009011 'olive oil health benefit'
+[5.281s] (1) 2009036 'notting hill film actors'
+[5.281s] (2) 2009067 'probabilistic models in information retrieval'
+[5.297s] (3) 2009073 'web link network analysis'
+[5.312s] (4) 2009074 'web ranking scoring algorithm'
+[5.312s] (5) 2009078 'supervised machine learning algorithm'
+[5.328s] (6) 2009085 'operating system +mutual +exclusion'
+[5.344s] Writing file...
+[5.344s]
+[5.875s] line 10499...[5.875s] Completed runs/NassimAntoineThomasMelanie_6_ltc_articles_stop179_nostem.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_7_ltn_articles_stop179_nostem.txt...
+[2.375s] (0) 2009011 'olive oil health benefit'
+[2.375s] (1) 2009036 'notting hill film actors'
+[2.391s] (2) 2009067 'probabilistic models in information retrieval'
+[2.391s] (3) 2009073 'web link network analysis'
+[2.391s] (4) 2009074 'web ranking scoring algorithm'
+[2.406s] (5) 2009078 'supervised machine learning algorithm'
+[2.422s] (6) 2009085 'operating system +mutual +exclusion'
+[2.422s] Writing file...
+[2.422s]
+[2.938s] line 10499...[2.938s] Completed runs/NassimAntoineThomasMelanie_7_ltn_articles_stop179_nostem.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_8_bm25_articles_stop179_nostem_k1.2_b0.75.txt...
+[2.516s] (0) 2009011 'olive oil health benefit'
+[2.516s] (1) 2009036 'notting hill film actors'
+[2.516s] (2) 2009067 'probabilistic models in information retrieval'
+[2.516s] (3) 2009073 'web link network analysis'
+[2.531s] (4) 2009074 'web ranking scoring algorithm'
+[2.531s] (5) 2009078 'supervised machine learning algorithm'
+[2.547s] (6) 2009085 'operating system +mutual +exclusion'
+[2.562s] Writing file...
+[2.562s]
+[3.078s] line 10499...[3.078s] Completed runs/NassimAntoineThomasMelanie_8_bm25_articles_stop179_nostem_k1.2_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_9_ltc_articles_stop179_porter.txt...
+[0.000s] Applying stemmer...
+[10.812s] (0) 2009011 'olive oil health benefit'
+[10.828s] (1) 2009036 'notting hill film actors'
+[10.844s] (2) 2009067 'probabilistic models in information retrieval'
+[10.859s] (3) 2009073 'web link network analysis'
+[10.875s] (4) 2009074 'web ranking scoring algorithm'
+[10.891s] (5) 2009078 'supervised machine learning algorithm'
+[10.906s] (6) 2009085 'operating system +mutual +exclusion'
+[10.922s] Writing file...
+[10.922s]
+[11.359s] line 10499...[11.359s] Completed runs/NassimAntoineThomasMelanie_9_ltc_articles_stop179_porter.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_10_ltn_articles_stop179_porter.txt...
+[1.984s] (0) 2009011 'olive oil health benefit'
+[2.000s] (1) 2009036 'notting hill film actors'
+[2.000s] (2) 2009067 'probabilistic models in information retrieval'
+[2.016s] (3) 2009073 'web link network analysis'
+[2.047s] (4) 2009074 'web ranking scoring algorithm'
+[2.047s] (5) 2009078 'supervised machine learning algorithm'
+[2.062s] (6) 2009085 'operating system +mutual +exclusion'
+[2.078s] Writing file...
+[2.078s]
+[2.609s] line 10499...[2.609s] Completed runs/NassimAntoineThomasMelanie_10_ltn_articles_stop179_porter.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_11_bm25_articles_stop179_porter_k1.2_b0.75.txt...
+[2.047s] (0) 2009011 'olive oil health benefit'
+[2.062s] (1) 2009036 'notting hill film actors'
+[2.062s] (2) 2009067 'probabilistic models in information retrieval'
+[2.078s] (3) 2009073 'web link network analysis'
+[2.266s] (4) 2009074 'web ranking scoring algorithm'
+[2.281s] (5) 2009078 'supervised machine learning algorithm'
+[2.297s] (6) 2009085 'operating system +mutual +exclusion'
+[2.312s] Writing file...
+[2.312s]
+[2.812s] line 10499...[2.812s] Completed runs/NassimAntoineThomasMelanie_11_bm25_articles_stop179_porter_k1.2_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_12_bm25_articles_stop179_porter_k1.2_b0.0.txt...
+[5.250s] (0) 2009011 'olive oil health benefit'
+[5.250s] (1) 2009036 'notting hill film actors'
+[5.266s] (2) 2009067 'probabilistic models in information retrieval'
+[5.281s] (3) 2009073 'web link network analysis'
+[5.312s] (4) 2009074 'web ranking scoring algorithm'
+[5.328s] (5) 2009078 'supervised machine learning algorithm'
+[5.328s] (6) 2009085 'operating system +mutual +exclusion'
+[5.344s] Writing file...
+[5.344s]
+[5.969s] line 10499...[5.969s] Completed runs/NassimAntoineThomasMelanie_12_bm25_articles_stop179_porter_k1.2_b0.0.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_13_bm25_articles_stop179_porter_k1.2_b0.1.txt...
+[5.203s] (0) 2009011 'olive oil health benefit'
+[5.203s] (1) 2009036 'notting hill film actors'
+[5.219s] (2) 2009067 'probabilistic models in information retrieval'
+[5.234s] (3) 2009073 'web link network analysis'
+[5.250s] (4) 2009074 'web ranking scoring algorithm'
+[5.266s] (5) 2009078 'supervised machine learning algorithm'
+[5.281s] (6) 2009085 'operating system +mutual +exclusion'
+[5.297s] Writing file...
+[5.297s]
+[5.797s] line 10499...[5.797s] Completed runs/NassimAntoineThomasMelanie_13_bm25_articles_stop179_porter_k1.2_b0.1.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_14_bm25_articles_stop179_porter_k1.2_b0.2.txt...
+[5.234s] (0) 2009011 'olive oil health benefit'
+[5.250s] (1) 2009036 'notting hill film actors'
+[5.250s] (2) 2009067 'probabilistic models in information retrieval'
+[5.266s] (3) 2009073 'web link network analysis'
+[5.438s] (4) 2009074 'web ranking scoring algorithm'
+[5.453s] (5) 2009078 'supervised machine learning algorithm'
+[5.469s] (6) 2009085 'operating system +mutual +exclusion'
+[5.484s] Writing file...
+[5.484s]
+[5.953s] line 10499...[5.953s] Completed runs/NassimAntoineThomasMelanie_14_bm25_articles_stop179_porter_k1.2_b0.2.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_15_bm25_articles_stop179_porter_k1.2_b0.30000000000000004.txt...
+[5.844s] (0) 2009011 'olive oil health benefit'
+[5.859s] (1) 2009036 'notting hill film actors'
+[5.875s] (2) 2009067 'probabilistic models in information retrieval'
+[5.906s] (3) 2009073 'web link network analysis'
+[5.938s] (4) 2009074 'web ranking scoring algorithm'
+[5.953s] (5) 2009078 'supervised machine learning algorithm'
+[5.969s] (6) 2009085 'operating system +mutual +exclusion'
+[6.000s] Writing file...
+[6.000s]
+[6.531s] line 10499...[6.531s] Completed runs/NassimAntoineThomasMelanie_15_bm25_articles_stop179_porter_k1.2_b0.30000000000000004.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_16_bm25_articles_stop179_porter_k1.2_b0.4.txt...
+[5.641s] (0) 2009011 'olive oil health benefit'
+[5.641s] (1) 2009036 'notting hill film actors'
+[5.656s] (2) 2009067 'probabilistic models in information retrieval'
+[5.672s] (3) 2009073 'web link network analysis'
+[5.703s] (4) 2009074 'web ranking scoring algorithm'
+[5.719s] (5) 2009078 'supervised machine learning algorithm'
+[5.734s] (6) 2009085 'operating system +mutual +exclusion'
+[5.766s] Writing file...
+[5.766s]
+[6.344s] line 10499...[6.344s] Completed runs/NassimAntoineThomasMelanie_16_bm25_articles_stop179_porter_k1.2_b0.4.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_17_bm25_articles_stop179_porter_k1.2_b0.5.txt...
+[5.438s] (0) 2009011 'olive oil health benefit'
+[5.438s] (1) 2009036 'notting hill film actors'
+[5.453s] (2) 2009067 'probabilistic models in information retrieval'
+[5.469s] (3) 2009073 'web link network analysis'
+[5.484s] (4) 2009074 'web ranking scoring algorithm'
+[5.500s] (5) 2009078 'supervised machine learning algorithm'
+[5.672s] (6) 2009085 'operating system +mutual +exclusion'
+[5.688s] Writing file...
+[5.688s]
+[6.172s] line 10499...[6.172s] Completed runs/NassimAntoineThomasMelanie_17_bm25_articles_stop179_porter_k1.2_b0.5.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_18_bm25_articles_stop179_porter_k1.2_b0.6000000000000001.txt...
+[5.719s] (0) 2009011 'olive oil health benefit'
+[5.734s] (1) 2009036 'notting hill film actors'
+[5.734s] (2) 2009067 'probabilistic models in information retrieval'
+[5.734s] (3) 2009073 'web link network analysis'
+[5.750s] (4) 2009074 'web ranking scoring algorithm'
+[5.750s] (5) 2009078 'supervised machine learning algorithm'
+[5.766s] (6) 2009085 'operating system +mutual +exclusion'
+[5.781s] Writing file...
+[5.781s]
+[6.375s] line 10499...[6.375s] Completed runs/NassimAntoineThomasMelanie_18_bm25_articles_stop179_porter_k1.2_b0.6000000000000001.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_19_bm25_articles_stop179_porter_k1.2_b0.7000000000000001.txt...
+[5.625s] (0) 2009011 'olive oil health benefit'
+[5.625s] (1) 2009036 'notting hill film actors'
+[5.641s] (2) 2009067 'probabilistic models in information retrieval'
+[5.656s] (3) 2009073 'web link network analysis'
+[5.672s] (4) 2009074 'web ranking scoring algorithm'
+[5.688s] (5) 2009078 'supervised machine learning algorithm'
+[5.703s] (6) 2009085 'operating system +mutual +exclusion'
+[5.719s] Writing file...
+[5.719s]
+[6.328s] line 10499...[6.328s] Completed runs/NassimAntoineThomasMelanie_19_bm25_articles_stop179_porter_k1.2_b0.7000000000000001.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_20_bm25_articles_stop179_porter_k1.2_b0.8.txt...
+[5.812s] (0) 2009011 'olive oil health benefit'
+[5.828s] (1) 2009036 'notting hill film actors'
+[5.844s] (2) 2009067 'probabilistic models in information retrieval'
+[5.859s] (3) 2009073 'web link network analysis'
+[5.875s] (4) 2009074 'web ranking scoring algorithm'
+[5.891s] (5) 2009078 'supervised machine learning algorithm'
+[5.906s] (6) 2009085 'operating system +mutual +exclusion'
+[6.094s] Writing file...
+[6.094s]
+[6.844s] line 10499...[6.844s] Completed runs/NassimAntoineThomasMelanie_20_bm25_articles_stop179_porter_k1.2_b0.8.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_21_bm25_articles_stop179_porter_k1.2_b0.9.txt...
+[5.562s] (0) 2009011 'olive oil health benefit'
+[5.562s] (1) 2009036 'notting hill film actors'
+[5.578s] (2) 2009067 'probabilistic models in information retrieval'
+[5.594s] (3) 2009073 'web link network analysis'
+[5.609s] (4) 2009074 'web ranking scoring algorithm'
+[5.609s] (5) 2009078 'supervised machine learning algorithm'
+[5.625s] (6) 2009085 'operating system +mutual +exclusion'
+[5.641s] Writing file...
+[5.641s]
+[6.375s] line 10499...[6.375s] Completed runs/NassimAntoineThomasMelanie_21_bm25_articles_stop179_porter_k1.2_b0.9.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_22_bm25_articles_stop179_porter_k1.2_b1.0.txt...
+[5.703s] (0) 2009011 'olive oil health benefit'
+[5.703s] (1) 2009036 'notting hill film actors'
+[5.703s] (2) 2009067 'probabilistic models in information retrieval'
+[5.719s] (3) 2009073 'web link network analysis'
+[5.734s] (4) 2009074 'web ranking scoring algorithm'
+[5.750s] (5) 2009078 'supervised machine learning algorithm'
+[5.766s] (6) 2009085 'operating system +mutual +exclusion'
+[5.781s] Writing file...
+[5.781s]
+[6.266s] line 10499...[6.266s] Completed runs/NassimAntoineThomasMelanie_22_bm25_articles_stop179_porter_k1.2_b1.0.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_23_bm25_articles_stop179_porter_k0.0_b0.75.txt...
+[4.688s] (0) 2009011 'olive oil health benefit'
+[4.688s] (1) 2009036 'notting hill film actors'
+[4.703s] (2) 2009067 'probabilistic models in information retrieval'
+[4.719s] (3) 2009073 'web link network analysis'
+[4.734s] (4) 2009074 'web ranking scoring algorithm'
+[4.750s] (5) 2009078 'supervised machine learning algorithm'
+[4.766s] (6) 2009085 'operating system +mutual +exclusion'
+[4.781s] Writing file...
+[4.781s]
+[5.359s] line 10499...[5.359s] Completed runs/NassimAntoineThomasMelanie_23_bm25_articles_stop179_porter_k0.0_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_24_bm25_articles_stop179_porter_k0.2_b0.75.txt...
+[4.812s] (0) 2009011 'olive oil health benefit'
+[4.812s] (1) 2009036 'notting hill film actors'
+[4.828s] (2) 2009067 'probabilistic models in information retrieval'
+[4.984s] (3) 2009073 'web link network analysis'
+[5.000s] (4) 2009074 'web ranking scoring algorithm'
+[5.031s] (5) 2009078 'supervised machine learning algorithm'
+[5.047s] (6) 2009085 'operating system +mutual +exclusion'
+[5.062s] Writing file...
+[5.062s]
+[5.656s] line 10499...[5.656s] Completed runs/NassimAntoineThomasMelanie_24_bm25_articles_stop179_porter_k0.2_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_25_bm25_articles_stop179_porter_k0.4_b0.75.txt...
+[5.047s] (0) 2009011 'olive oil health benefit'
+[5.047s] (1) 2009036 'notting hill film actors'
+[5.062s] (2) 2009067 'probabilistic models in information retrieval'
+[5.078s] (3) 2009073 'web link network analysis'
+[5.094s] (4) 2009074 'web ranking scoring algorithm'
+[5.125s] (5) 2009078 'supervised machine learning algorithm'
+[5.125s] (6) 2009085 'operating system +mutual +exclusion'
+[5.141s] Writing file...
+[5.141s]
+[5.656s] line 10499...[5.656s] Completed runs/NassimAntoineThomasMelanie_25_bm25_articles_stop179_porter_k0.4_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_26_bm25_articles_stop179_porter_k0.6000000000000001_b0.75.txt...
+[4.969s] (0) 2009011 'olive oil health benefit'
+[4.984s] (1) 2009036 'notting hill film actors'
+[4.984s] (2) 2009067 'probabilistic models in information retrieval'
+[5.000s] (3) 2009073 'web link network analysis'
+[5.031s] (4) 2009074 'web ranking scoring algorithm'
+[5.047s] (5) 2009078 'supervised machine learning algorithm'
+[5.047s] (6) 2009085 'operating system +mutual +exclusion'
+[5.047s] Writing file...
+[5.047s]
+[5.656s] line 10499...[5.656s] Completed runs/NassimAntoineThomasMelanie_26_bm25_articles_stop179_porter_k0.6000000000000001_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_27_bm25_articles_stop179_porter_k0.8_b0.75.txt...
+[5.078s] (0) 2009011 'olive oil health benefit'
+[5.094s] (1) 2009036 'notting hill film actors'
+[5.109s] (2) 2009067 'probabilistic models in information retrieval'
+[5.125s] (3) 2009073 'web link network analysis'
+[5.297s] (4) 2009074 'web ranking scoring algorithm'
+[5.312s] (5) 2009078 'supervised machine learning algorithm'
+[5.328s] (6) 2009085 'operating system +mutual +exclusion'
+[5.328s] Writing file...
+[5.328s]
+[5.984s] line 10499...[5.984s] Completed runs/NassimAntoineThomasMelanie_27_bm25_articles_stop179_porter_k0.8_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_28_bm25_articles_stop179_porter_k1.0_b0.75.txt...
+[5.297s] (0) 2009011 'olive oil health benefit'
+[5.297s] (1) 2009036 'notting hill film actors'
+[5.297s] (2) 2009067 'probabilistic models in information retrieval'
+[5.312s] (3) 2009073 'web link network analysis'
+[5.344s] (4) 2009074 'web ranking scoring algorithm'
+[5.359s] (5) 2009078 'supervised machine learning algorithm'
+[5.359s] (6) 2009085 'operating system +mutual +exclusion'
+[5.375s] Writing file...
+[5.375s]
+[6.016s] line 10499...[6.016s] Completed runs/NassimAntoineThomasMelanie_28_bm25_articles_stop179_porter_k1.0_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_29_bm25_articles_stop179_porter_k1.2000000000000002_b0.75.txt...
+[5.016s] (0) 2009011 'olive oil health benefit'
+[5.016s] (1) 2009036 'notting hill film actors'
+[5.031s] (2) 2009067 'probabilistic models in information retrieval'
+[5.047s] (3) 2009073 'web link network analysis'
+[5.078s] (4) 2009074 'web ranking scoring algorithm'
+[5.094s] (5) 2009078 'supervised machine learning algorithm'
+[5.109s] (6) 2009085 'operating system +mutual +exclusion'
+[5.109s] Writing file...
+[5.109s]
+[5.641s] line 10499...[5.641s] Completed runs/NassimAntoineThomasMelanie_29_bm25_articles_stop179_porter_k1.2000000000000002_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_30_bm25_articles_stop179_porter_k1.4000000000000001_b0.75.txt...
+[5.078s] (0) 2009011 'olive oil health benefit'
+[5.078s] (1) 2009036 'notting hill film actors'
+[5.078s] (2) 2009067 'probabilistic models in information retrieval'
+[5.078s] (3) 2009073 'web link network analysis'
+[5.109s] (4) 2009074 'web ranking scoring algorithm'
+[5.281s] (5) 2009078 'supervised machine learning algorithm'
+[5.281s] (6) 2009085 'operating system +mutual +exclusion'
+[5.297s] Writing file...
+[5.297s]
+[5.906s] line 10499...[5.906s] Completed runs/NassimAntoineThomasMelanie_30_bm25_articles_stop179_porter_k1.4000000000000001_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_31_bm25_articles_stop179_porter_k1.6_b0.75.txt...
+[5.031s] (0) 2009011 'olive oil health benefit'
+[5.031s] (1) 2009036 'notting hill film actors'
+[5.047s] (2) 2009067 'probabilistic models in information retrieval'
+[5.062s] (3) 2009073 'web link network analysis'
+[5.078s] (4) 2009074 'web ranking scoring algorithm'
+[5.094s] (5) 2009078 'supervised machine learning algorithm'
+[5.109s] (6) 2009085 'operating system +mutual +exclusion'
+[5.125s] Writing file...
+[5.125s]
+[5.719s] line 10499...[5.719s] Completed runs/NassimAntoineThomasMelanie_31_bm25_articles_stop179_porter_k1.6_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_32_bm25_articles_stop179_porter_k1.8_b0.75.txt...
+[4.828s] (0) 2009011 'olive oil health benefit'
+[4.844s] (1) 2009036 'notting hill film actors'
+[4.844s] (2) 2009067 'probabilistic models in information retrieval'
+[4.859s] (3) 2009073 'web link network analysis'
+[4.891s] (4) 2009074 'web ranking scoring algorithm'
+[4.891s] (5) 2009078 'supervised machine learning algorithm'
+[4.906s] (6) 2009085 'operating system +mutual +exclusion'
+[4.922s] Writing file...
+[4.922s]
+[5.625s] line 10499...[5.625s] Completed runs/NassimAntoineThomasMelanie_32_bm25_articles_stop179_porter_k1.8_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_33_bm25_articles_stop179_porter_k2.0_b0.75.txt...
+[5.109s] (0) 2009011 'olive oil health benefit'
+[5.109s] (1) 2009036 'notting hill film actors'
+[5.125s] (2) 2009067 'probabilistic models in information retrieval'
+[5.141s] (3) 2009073 'web link network analysis'
+[5.156s] (4) 2009074 'web ranking scoring algorithm'
+[5.172s] (5) 2009078 'supervised machine learning algorithm'
+[5.344s] (6) 2009085 'operating system +mutual +exclusion'
+[5.344s] Writing file...
+[5.344s]
+[5.984s] line 10499...[5.984s] Completed runs/NassimAntoineThomasMelanie_33_bm25_articles_stop179_porter_k2.0_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_34_bm25_articles_stop179_porter_k2.2_b0.75.txt...
+[4.922s] (0) 2009011 'olive oil health benefit'
+[4.922s] (1) 2009036 'notting hill film actors'
+[4.922s] (2) 2009067 'probabilistic models in information retrieval'
+[4.953s] (3) 2009073 'web link network analysis'
+[4.969s] (4) 2009074 'web ranking scoring algorithm'
+[5.000s] (5) 2009078 'supervised machine learning algorithm'
+[5.000s] (6) 2009085 'operating system +mutual +exclusion'
+[5.031s] Writing file...
+[5.031s]
+[5.625s] line 10499...[5.625s] Completed runs/NassimAntoineThomasMelanie_34_bm25_articles_stop179_porter_k2.2_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_35_bm25_articles_stop179_porter_k2.4000000000000004_b0.75.txt...
+[5.047s] (0) 2009011 'olive oil health benefit'
+[5.047s] (1) 2009036 'notting hill film actors'
+[5.062s] (2) 2009067 'probabilistic models in information retrieval'
+[5.078s] (3) 2009073 'web link network analysis'
+[5.094s] (4) 2009074 'web ranking scoring algorithm'
+[5.109s] (5) 2009078 'supervised machine learning algorithm'
+[5.125s] (6) 2009085 'operating system +mutual +exclusion'
+[5.141s] Writing file...
+[5.141s]
+[5.781s] line 10499...[5.781s] Completed runs/NassimAntoineThomasMelanie_35_bm25_articles_stop179_porter_k2.4000000000000004_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_36_bm25_articles_stop179_porter_k2.6_b0.75.txt...
+[5.016s] (0) 2009011 'olive oil health benefit'
+[5.031s] (1) 2009036 'notting hill film actors'
+[5.031s] (2) 2009067 'probabilistic models in information retrieval'
+[5.047s] (3) 2009073 'web link network analysis'
+[5.062s] (4) 2009074 'web ranking scoring algorithm'
+[5.078s] (5) 2009078 'supervised machine learning algorithm'
+[5.078s] (6) 2009085 'operating system +mutual +exclusion'
+[5.094s] Writing file...
+[5.094s]
+[5.781s] line 10499...[5.781s] Completed runs/NassimAntoineThomasMelanie_36_bm25_articles_stop179_porter_k2.6_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_37_bm25_articles_stop179_porter_k2.8000000000000003_b0.75.txt...
+[5.156s] (0) 2009011 'olive oil health benefit'
+[5.344s] (1) 2009036 'notting hill film actors'
+[5.344s] (2) 2009067 'probabilistic models in information retrieval'
+[5.359s] (3) 2009073 'web link network analysis'
+[5.375s] (4) 2009074 'web ranking scoring algorithm'
+[5.391s] (5) 2009078 'supervised machine learning algorithm'
+[5.406s] (6) 2009085 'operating system +mutual +exclusion'
+[5.422s] Writing file...
+[5.422s]
+[6.000s] line 10499...[6.000s] Completed runs/NassimAntoineThomasMelanie_37_bm25_articles_stop179_porter_k2.8000000000000003_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_38_bm25_articles_stop179_porter_k3.0_b0.75.txt...
+[5.219s] (0) 2009011 'olive oil health benefit'
+[5.234s] (1) 2009036 'notting hill film actors'
+[5.234s] (2) 2009067 'probabilistic models in information retrieval'
+[5.250s] (3) 2009073 'web link network analysis'
+[5.250s] (4) 2009074 'web ranking scoring algorithm'
+[5.266s] (5) 2009078 'supervised machine learning algorithm'
+[5.281s] (6) 2009085 'operating system +mutual +exclusion'
+[5.297s] Writing file...
+[5.297s]
+[5.938s] line 10499...[5.938s] Completed runs/NassimAntoineThomasMelanie_38_bm25_articles_stop179_porter_k3.0_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_39_bm25_articles_stop179_porter_k3.2_b0.75.txt...
+[5.188s] (0) 2009011 'olive oil health benefit'
+[5.188s] (1) 2009036 'notting hill film actors'
+[5.203s] (2) 2009067 'probabilistic models in information retrieval'
+[5.219s] (3) 2009073 'web link network analysis'
+[5.234s] (4) 2009074 'web ranking scoring algorithm'
+[5.234s] (5) 2009078 'supervised machine learning algorithm'
+[5.250s] (6) 2009085 'operating system +mutual +exclusion'
+[5.266s] Writing file...
+[5.266s]
+[5.766s] line 10499...[5.766s] Completed runs/NassimAntoineThomasMelanie_39_bm25_articles_stop179_porter_k3.2_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_40_bm25_articles_stop179_porter_k3.4000000000000004_b0.75.txt...
+[5.016s] (0) 2009011 'olive oil health benefit'
+[5.031s] (1) 2009036 'notting hill film actors'
+[5.172s] (2) 2009067 'probabilistic models in information retrieval'
+[5.188s] (3) 2009073 'web link network analysis'
+[5.203s] (4) 2009074 'web ranking scoring algorithm'
+[5.219s] (5) 2009078 'supervised machine learning algorithm'
+[5.219s] (6) 2009085 'operating system +mutual +exclusion'
+[5.234s] Writing file...
+[5.234s]
+[5.750s] line 10499...[5.750s] Completed runs/NassimAntoineThomasMelanie_40_bm25_articles_stop179_porter_k3.4000000000000004_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_41_bm25_articles_stop179_porter_k3.6_b0.75.txt...
+[4.984s] (0) 2009011 'olive oil health benefit'
+[5.000s] (1) 2009036 'notting hill film actors'
+[5.000s] (2) 2009067 'probabilistic models in information retrieval'
+[5.016s] (3) 2009073 'web link network analysis'
+[5.047s] (4) 2009074 'web ranking scoring algorithm'
+[5.062s] (5) 2009078 'supervised machine learning algorithm'
+[5.062s] (6) 2009085 'operating system +mutual +exclusion'
+[5.078s] Writing file...
+[5.078s]
+[5.641s] line 10499...[5.641s] Completed runs/NassimAntoineThomasMelanie_41_bm25_articles_stop179_porter_k3.6_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_42_bm25_articles_stop179_porter_k3.8000000000000003_b0.75.txt...
+[4.969s] (0) 2009011 'olive oil health benefit'
+[4.984s] (1) 2009036 'notting hill film actors'
+[4.984s] (2) 2009067 'probabilistic models in information retrieval'
+[5.016s] (3) 2009073 'web link network analysis'
+[5.031s] (4) 2009074 'web ranking scoring algorithm'
+[5.047s] (5) 2009078 'supervised machine learning algorithm'
+[5.047s] (6) 2009085 'operating system +mutual +exclusion'
+[5.047s] Writing file...
+[5.047s]
+[5.703s] line 10499...[5.703s] Completed runs/NassimAntoineThomasMelanie_42_bm25_articles_stop179_porter_k3.8000000000000003_b0.75.txt...
+
+[0.000s] Starting file runs/NassimAntoineThomasMelanie_43_bm25_articles_stop179_porter_k4.0_b0.75.txt...
+[5.125s] (0) 2009011 'olive oil health benefit'
+[5.125s] (1) 2009036 'notting hill film actors'
+[5.125s] (2) 2009067 'probabilistic models in information retrieval'
+[5.312s] (3) 2009073 'web link network analysis'
+[5.344s] (4) 2009074 'web ranking scoring algorithm'
+[5.359s] (5) 2009078 'supervised machine learning algorithm'
+[5.359s] (6) 2009085 'operating system +mutual +exclusion'
+[5.375s] Writing file...
+[5.375s]
+[5.906s] line 10499...[5.906s] Completed runs/NassimAntoineThomasMelanie_43_bm25_articles_stop179_porter_k4.0_b0.75.txt...
