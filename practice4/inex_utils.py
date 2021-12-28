@@ -1,5 +1,7 @@
 
-from typing import Set, Generator, Tuple, TypeVar
+from typing import List, Set, Generator, Tuple, TypeVar
+
+from index import RankedRetrivialAnswer
 
 T = TypeVar("T")
 
@@ -18,10 +20,13 @@ def xml_subpath_of(p: str) -> Generator[str, None, None]:
         yield p
 
 
-def overlapp(s: Set[str], path: str) -> bool:
+def overlapp(s: Set[str], s2: Set[str], path: str) -> bool:
     """
     say if the path overlapp with another in the set
     """
+    if path in s2:
+        return True
+
     for p in xml_subpath_of(path):
         if p in s:
             return True
@@ -29,12 +34,16 @@ def overlapp(s: Set[str], path: str) -> bool:
     return False
 
 
-def remove_overlapping(generator: Generator[Tuple[T, str], None, None]) -> Generator[Tuple[T, str], None, None]:
+def remove_overlapping(lst: List[RankedRetrivialAnswer]) -> Generator[RankedRetrivialAnswer, None, None]:
     """
     filter all (t, path) with path overlapping with each other (first stay)
     """
     paths = set()
-    for t, path in generator:
-        if not overlapp(paths, path):
-            yield t, path
+    spaths = set()
+    for answer in lst:
+        path = answer.path
+        if not overlapp(paths, spaths, path):
+            yield answer
             paths.add(path)
+            for p in xml_subpath_of(path):
+                spaths.add(p)
