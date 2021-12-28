@@ -130,10 +130,11 @@ class RunResultProducer:
 
             answers = index.compute_ranked_retrieval_as_list(query)
             answers = remove_overlapping(answers)
+            answers = islice(answers, articles)
             answers = remove_interleaved(answers)
 
             # parse answers
-            for rank, answer in enumerate(islice(answers, articles)):
+            for rank, answer in enumerate(answers):
                 results.append(RunResultLine(qid, answer.doc,
                                rank, answer.wtdsum, self.team_name, answer.path))
 
