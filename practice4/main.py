@@ -7,7 +7,7 @@ from reading import supply_docs
 from optparse import OptionParser, Values
 import query_parser
 import itertools
-from run_result import Granularity, Stop, Stem, RunResultProducer
+from run_result import Granularity, Stop, Stem, RunResultProducer, GRANU_LIST
 from algorithms import ALGO_LIST, Algorithms
 import os
 import numpy
@@ -34,7 +34,7 @@ def compute_algo(algo: Algorithms, index: IndexObject, options: Values):
         print("-", a.doc, "(" + str(a.wtdsum) + ")")
 
 
-def run_index(args: List[str]):
+def run_index(granu: Granularity, args: List[str]):
     index = IndexStore()
 
     # Number of document for this session
@@ -42,7 +42,7 @@ def run_index(args: List[str]):
     # Number of word for this session
     word_count = 0
 
-    for docno, doctext in supply_docs(args):
+    for docno, doctext in supply_docs(args, granu):
         doc_count += 1
         # Fetch all the words
         words = re.findall('\w+', doctext)
@@ -76,6 +76,8 @@ def main():
 
     parser.add_option("-a", "--algorithm", dest="algo",
                       help="algorithm to use to enter query mode, values: " + " ".join(ALGO_LIST), default=Algorithms.ALGO_ALL.value)
+    parser.add_option("-g", "--granularity", dest="granularity",
+                      help="granularity to use while testing, values: " + " ".join(GRANU_LIST), default=Granularity.ARTICLE.value)
     parser.add_option("-A", "--algorithm_sentence", dest="algo_sentence",
                       help="algorithm try value", default="web ranking scoring algorithm")
 
@@ -94,61 +96,18 @@ def main():
         return
 
     algo = Algorithms(options.algo)
+    granu = Granularity(options.granularity)
 
     if options.run:
         os.makedirs("runs", exist_ok=True)
         producer = RunResultProducer("NassimAntoineThomasMelanie")
         logger.start()
         logger.write("Running index...")
-        index, _, _ = run_index(args)
+        index, _, _ = run_index(granu, args)
         logger.end()
         producer.produce_result(
-            index, Algorithms.ALGO_LTC, Granularity.ARTICLE, Stop.NO_STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=False)
-        producer.produce_result(
-            index, Algorithms.ALGO_LTN, Granularity.ARTICLE, Stop.NO_STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=False)
-        producer.produce_result(
-            index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.NO_STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=False)
+            index, Algorithms.ALGO_LTC, granu, Stop.NO_STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=False)
 
-        producer.produce_result(
-            index, Algorithms.ALGO_LTC, Granularity.ARTICLE, Stop.NO_STOP, Stem.PORTER, apply_stemmer=True, apply_stop_words=False)
-        producer.produce_result(
-            index, Algorithms.ALGO_LTN, Granularity.ARTICLE, Stop.NO_STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False)
-        producer.produce_result(
-            index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.NO_STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False)
-
-        logger.start()
-        logger.write("Running index...")
-        index, _, _ = run_index(args)
-        logger.end()
-
-        producer.produce_result(
-            index, Algorithms.ALGO_LTC, Granularity.ARTICLE, Stop.STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=True)
-        producer.produce_result(
-            index, Algorithms.ALGO_LTN, Granularity.ARTICLE, Stop.STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=False)
-        producer.produce_result(
-            index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=False)
-
-        producer.produce_result(
-            index, Algorithms.ALGO_LTC, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=True, apply_stop_words=False)
-        producer.produce_result(
-            index, Algorithms.ALGO_LTN, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False)
-        producer.produce_result(
-            index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False)
-
-        # 12 examples
-
-        for b in numpy.linspace(0.0, 1.0, 11):
-            producer.produce_result(
-                index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False, bm25_b=b, bm25_k=1.2)
-
-        # 23 examples
-
-        for k in numpy.linspace(0.0, 4.0, 21):
-            producer.produce_result(
-                index, Algorithms.ALGO_BM25, Granularity.ARTICLE, Stop.STOP, Stem.PORTER, apply_stemmer=False, apply_stop_words=False, bm25_b=0.75, bm25_k=k)
-
-        # 44 examples
-        # 6 ideas ?
     else:
         # locate end parenthesis of boolean expression
         logger.start()

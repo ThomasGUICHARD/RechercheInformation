@@ -28,6 +28,14 @@ class Granularity(Enum):
     PASSAGES = "passages"
 
 
+GRANULARITY_MAP = {}
+# article[1]/bdy[1]/sec[3]/p[3]
+GRANULARITY_MAP[Granularity.ARTICLE.value] = ["article"]
+GRANULARITY_MAP[Granularity.ELEMENTS.value] = ["article", "bdy", "sec"]
+GRANULARITY_MAP[Granularity.PASSAGES.value] = ["article", "bdy", "sec", "p"]
+GRANU_LIST = [granu.value for granu in Granularity]
+
+
 class Stop(Enum):
     NO_STOP = "nostop"
     STOP = "stop"
