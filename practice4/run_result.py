@@ -137,6 +137,7 @@ class RunResultProducer:
             for rank, answer in enumerate(answers):
                 results.append(RunResultLine(qid, answer.doc,
                                rank, answer.wtdsum, self.team_name, answer.path))
+            logger.write(f"{rank} line(s) added")
 
         logger.write("Writing file...")
         logger.write("")
@@ -145,6 +146,7 @@ class RunResultProducer:
                 logger.write_no_endl(f"line {i}...")
                 result.write(f)
 
+        print("")
         logger.write(f"Completed {file_name}...")
 
         logger.end()

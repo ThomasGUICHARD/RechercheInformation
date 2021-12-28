@@ -38,15 +38,20 @@ def remove_overlapping(lst: List[RankedRetrivialAnswer]) -> Generator[RankedRetr
     """
     filter all (t, path) with path overlapping with each other (first stay)
     """
-    paths = set()
-    spaths = set()
+    paths = dict()
+
     for answer in lst:
         path = answer.path
-        if not overlapp(paths, spaths, path):
+        if answer.doc not in paths:
+            paths[answer.doc] = (set(), set())
+
+        dpaths, dspaths = paths[answer.doc]
+
+        if not overlapp(dpaths, dspaths, path):
             yield answer
-            paths.add(path)
+            dpaths.add(path)
             for p in xml_subpath_of(path):
-                spaths.add(p)
+                dspaths.add(p)
 
 
 def remove_interleaved(it: Iterator[RankedRetrivialAnswer]) -> Generator[RankedRetrivialAnswer, None, None]:
@@ -62,4 +67,5 @@ def remove_interleaved(it: Iterator[RankedRetrivialAnswer]) -> Generator[RankedR
         answers[answer.doc].append(answer)
 
     for doc in answers:
-        return (asw for asw in answers[doc])
+        for asw in answers[doc]:
+            yield asw

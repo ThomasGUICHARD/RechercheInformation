@@ -35,6 +35,7 @@ def compute_algo(algo: Algorithms, index: IndexObject, options: Values):
 
 
 def run_index(granu: Granularity, args: List[str], maxfile: int):
+    logger.write("indexing...")
     index = IndexStore()
 
     # Number of document for this session
@@ -58,6 +59,11 @@ def run_index(granu: Granularity, args: List[str], maxfile: int):
 
             # Fetch an index object and add a find
             index.add_word(docno, word)
+
+    print("")
+
+    logger.write(
+        f"end indexing: {doc_count} doc(s), {len(index.objects)} object(s)")
 
     return index, doc_count, word_count
 
@@ -113,7 +119,7 @@ def main():
         index, _, _ = run_index(granu, args, options.maxfile)
         logger.end()
         producer.produce_result(
-            index, Algorithms.ALGO_LTC, granu, Stop.NO_STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=False)
+            index, Algorithms.ALGO_BM25, granu, Stop.NO_STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=False)
 
     else:
         # locate end parenthesis of boolean expression

@@ -98,5 +98,5 @@ def supply_docs(file_names: List[str], granu: Granularity) -> Generator[Tuple[st
                 soup = BeautifulSoup("\n".join(f.readlines()), "xml")
                 for docno, doctext in recursive_supply(docno, "", soup, nodes):
                     yield docno, doctext
-    logger.write("")
+    print("")
     logger.write("Reading completed")
