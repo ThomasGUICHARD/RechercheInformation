@@ -34,7 +34,7 @@ def compute_algo(algo: Algorithms, index: IndexObject, options: Values):
         print("-", a.doc, "(" + str(a.wtdsum) + ")")
 
 
-def run_index(granu: Granularity, args: List[str]):
+def run_index(granu: Granularity, args: List[str], maxfile: int):
     index = IndexStore()
 
     # Number of document for this session
@@ -42,7 +42,12 @@ def run_index(granu: Granularity, args: List[str]):
     # Number of word for this session
     word_count = 0
 
-    for docno, doctext in supply_docs(args, granu):
+    docs = supply_docs(args, granu)
+
+    if maxfile > 0:
+        docs = itertools.islice(docs, maxfile)
+
+    for docno, doctext in docs:
         doc_count += 1
         # Fetch all the words
         words = re.findall('\w+', doctext)
@@ -78,6 +83,8 @@ def main():
                       help="algorithm to use to enter query mode, values: " + " ".join(ALGO_LIST), default=Algorithms.ALGO_ALL.value)
     parser.add_option("-g", "--granularity", dest="granularity",
                       help="granularity to use while testing, values: " + " ".join(GRANU_LIST), default=Granularity.ARTICLE.value)
+    parser.add_option("-m", "--maxfile", dest="maxfile",
+                      help="max number of files to read, 0 for infinite", default=0, type="int")
     parser.add_option("-A", "--algorithm_sentence", dest="algo_sentence",
                       help="algorithm try value", default="web ranking scoring algorithm")
 
@@ -103,7 +110,7 @@ def main():
         producer = RunResultProducer("NassimAntoineThomasMelanie")
         logger.start()
         logger.write("Running index...")
-        index, _, _ = run_index(granu, args)
+        index, _, _ = run_index(granu, args, options.maxfile)
         logger.end()
         producer.produce_result(
             index, Algorithms.ALGO_LTC, granu, Stop.NO_STOP, Stem.NO_STEM, apply_stemmer=False, apply_stop_words=False)
@@ -113,7 +120,7 @@ def main():
         logger.start()
         logger.write("Starting...")
 
-        index, doc_count, word_count = run_index(args)
+        index, doc_count, word_count = run_index(granu, args, options.maxfile)
 
         # P3 - Delete stop words
         if options.stopwords:
