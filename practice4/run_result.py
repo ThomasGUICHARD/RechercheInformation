@@ -4,7 +4,7 @@ from algorithms import Algorithms
 from index import porter_stemmer, stop_words, RankedRetrivialAnswer, IndexStore
 from timing import logger
 from itertools import islice
-from inex_utils import remove_overlapping
+from inex_utils import remove_overlapping, remove_interleaved
 
 # maximum line count per file
 MAX_LINES = 10_500
@@ -130,6 +130,7 @@ class RunResultProducer:
 
             answers = index.compute_ranked_retrieval_as_list(query)
             answers = remove_overlapping(answers)
+            answers = remove_interleaved(answers)
 
             # parse answers
             for rank, answer in enumerate(islice(answers, articles)):

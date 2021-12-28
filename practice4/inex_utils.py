@@ -47,3 +47,11 @@ def remove_overlapping(lst: List[RankedRetrivialAnswer]) -> Generator[RankedRetr
             paths.add(path)
             for p in xml_subpath_of(path):
                 spaths.add(p)
+
+
+def remove_interleaved(lst: List[RankedRetrivialAnswer]) -> Generator[RankedRetrivialAnswer, None, None]:
+    """
+    remove the interleaved values
+    """
+    # TODO: remove interleaved
+    return (e for e in lst)
