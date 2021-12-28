@@ -1,5 +1,5 @@
 
-from typing import Iterator, List, Set, Generator, Tuple, TypeVar
+from typing import Dict, Iterator, List, Set, Generator, Tuple, TypeVar
 
 from index import RankedRetrivialAnswer
 
@@ -49,9 +49,17 @@ def remove_overlapping(lst: List[RankedRetrivialAnswer]) -> Generator[RankedRetr
                 spaths.add(p)
 
 
-def remove_interleaved(lst: Iterator[RankedRetrivialAnswer]) -> Generator[RankedRetrivialAnswer, None, None]:
+def remove_interleaved(it: Iterator[RankedRetrivialAnswer]) -> Generator[RankedRetrivialAnswer, None, None]:
     """
     remove the interleaved values
     """
-    # TODO: remove interleaved
-    return (e for e in lst)
+    answers: Dict[str, List[RankedRetrivialAnswer]] = dict()
+
+    for answer in it:
+        if answer.doc not in answers:
+            answers[answer.doc] = []
+
+        answers[answer.doc].append(answer)
+
+    for doc in answers:
+        return (asw for asw in answers[doc])
