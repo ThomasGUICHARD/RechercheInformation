@@ -6,7 +6,8 @@ import os
 import os.path
 import gzip
 import zipfile
-
+from bs4 import BeautifulSoup
+from xml.etree import ElementTree as ET
 supply_docs_doc_read_pattern = re.compile("<doc><docno>([^<]*)</docno>")
 supply_docs_doc_read_end_pattern = re.compile("</doc>")
 
@@ -40,6 +41,21 @@ def supply_files(file_names: List[str]) -> Generator[str, None, None]:
         else:
             yield file_name
 
+
+
+def getXmlText(dataDirectory):
+    _xmlDocs = os.listdir("{}".format(dataDirectory[0]))    
+    # ./Practice_05_data/XML-Coll-withSem/
+    for _xmlDoc in _xmlDocs :
+        print("[Reading {} file]".format(_xmlDoc))
+        _f=open("{}{}".format(dataDirectory[0],_xmlDoc))
+        _f=_f.read()
+        _f=_f.replace("&","")
+        t = ET.fromstring(_f)
+        _xmlText=''.join(t.findall('.//header')[0].itertext())+''.join(t.findall('.//bdy')[0].itertext())
+        _docno= _xmlDoc.split(".")
+        yield  _docno[0],_xmlText.strip() 
+         
 
 def supply_docs(file_names: List[str]) -> Generator[Tuple[str, str], None, None]:
     """

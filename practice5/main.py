@@ -3,7 +3,7 @@ import re
 from RunManager import RunManager
 from timing import logger, QuickTime
 from index import IndexObject, IndexStore
-from reading import supply_docs
+from reading import supply_docs , getXmlText
 from optparse import OptionParser, Values
 from graph_cache import StatCache
 from  query_parser import parse
@@ -11,6 +11,9 @@ import itertools
 from IndexMode import IndexMode
 
 algorithms = ["all", "bool", "bm25", "ltc", "ltn"]
+
+
+
 
 
 def compute_algo(algo: str, index: IndexObject, options: Values):
@@ -91,7 +94,11 @@ def main():
     # Number of word for this session
     word_count = 0
     _docIdList=[]
-    for docno, doctext in supply_docs([args[0]]):
+    
+    
+    # !----------------------- Get Docs from XML Data-----------------------
+    
+    for docno, doctext in getXmlText(dataDirectory=[args[0]]):
         _docIdList.append(docno)
         doc_count += 1
         # Fetch all the words
@@ -106,6 +113,34 @@ def main():
 
         # Ask to compute the stats to produce images
         stats.compute_stat()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    # !-----------------------------------------------------------------------
+    
+    
+    # for docno, doctext in supply_docs([args[0]]):
+    #     _docIdList.append(docno)
+    #     doc_count += 1
+    #     # Fetch all the words
+    #     words = re.findall('\w+', doctext)
+    #     for w in words:
+    #         word = w.lower()
+
+    #         word_count += 1
+
+    #         # Fetch an index object and add a find
+    #         index.add_word(docno, word)
+
+    #     # Ask to compute the stats to produce images
+    #     stats.compute_stat()
     # P3 - Delete stop words
     if options.stopwords:
         index.remove_stopwords()

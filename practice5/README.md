@@ -41,6 +41,11 @@ python main.py FILES -a bm25 -B 0.75 -K 1.2
 ```
 
 ### All examples
+Command line :
+```
+python3 main.py ./Practice_05_data/XML-Coll-withSem/
+
+```
 
 ```
 Antoine:H:\Vuze Downloads\data\ri\RechercheInformation\practice3 (main)> python .\main.py ..\..\archive\Practice_03_data\Text_Only_Ascii_Coll_NoSem.zip
