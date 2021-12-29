@@ -58,14 +58,16 @@ def remove_interleaved(it: Iterator[RankedRetrivialAnswer]) -> Generator[RankedR
     """
     remove the interleaved values
     """
-    answers: Dict[str, List[RankedRetrivialAnswer]] = dict()
+    answers: List[List[RankedRetrivialAnswer]] = []
+    doc_index: Dict[str, int] = dict()
 
     for answer in it:
-        if answer.doc not in answers:
-            answers[answer.doc] = []
+        if answer.doc not in doc_index:
+            doc_index[answer.doc] = len(answers)
+            answers.append([answer])
+        else:
+            answers[doc_index[answer.doc]].append(answer)
 
-        answers[answer.doc].append(answer)
-
-    for doc in answers:
-        for asw in answers[doc]:
+    for doclist in answers:
+        for asw in doclist:
             yield asw
