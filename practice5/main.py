@@ -3,7 +3,7 @@ import re
 from RunManager import RunManager
 from timing import logger, QuickTime
 from index import IndexObject, IndexStore
-from reading import supply_docs , getXmlText
+from reading import supply_docs , getXmlText ,getXmlTextSubSections
 from optparse import OptionParser, Values
 from graph_cache import StatCache
 from  query_parser import parse
@@ -96,20 +96,22 @@ def main():
     _docIdList=[]
     
     
-    # !----------------------- Get Docs from XML Data-----------------------
     
-    for docno, doctext in getXmlText(dataDirectory=[args[0]]):
-        _docIdList.append(docno)
+    
+    #! -----------Retrieve sub section ------------------------------------
+    
+    for _xPath , _docText in getXmlTextSubSections(dataDirectory=[args[0]]): #"xPath":"","docno":,"text":
+        _docIdList.append(_xPath)
         doc_count += 1
         # Fetch all the words
-        words = re.findall('\w+', doctext)
+        words = re.findall('\w+', _docText)
         for w in words:
             word = w.lower()
 
             word_count += 1
 
             # Fetch an index object and add a find
-            index.add_word(docno, word)
+            index.add_word(_xPath, word)
 
         # Ask to compute the stats to produce images
         stats.compute_stat()
@@ -120,7 +122,27 @@ def main():
     
     
     
+    #! --------------------------------------------------------------------
+
     
+    
+    # !----------------------- Get Docs from XML Data-----------------------
+    
+    # for docno, doctext in getXmlText(dataDirectory=[args[0]]):
+    #     _docIdList.append(docno)
+    #     doc_count += 1
+    #     # Fetch all the words
+    #     words = re.findall('\w+', doctext)
+    #     for w in words:
+    #         word = w.lower()
+
+    #         word_count += 1
+
+    #         # Fetch an index object and add a find
+    #         index.add_word(docno, word)
+
+    #     # Ask to compute the stats to produce images
+    #     stats.compute_stat()
     
     
     # !-----------------------------------------------------------------------
@@ -150,11 +172,11 @@ def main():
         index.apply_stemmer()
 
     # Practice 3 - wdf
-    if options.algo == "all":
-        for algo in algorithms:
-            compute_algo(algo, index, options)
-    elif options.algo != "bool":
-        compute_algo(options.algo, index, options)
+    # if options.algo == "all":
+    #     for algo in algorithms:
+    #         compute_algo(algo, index, options)
+    # elif options.algo != "bool":
+    #     compute_algo(options.algo, index, options)
 
 
     logger.write("Completed...")
@@ -170,14 +192,14 @@ def main():
     print("Vocabulary size: ", len(index.objects), " word(s)", sep="")
 
     # Print index if asked or not enough element
-    if doc_count <= 10 or options.index:
-        for word in sorted(index.objects):
-            io = index.objects[word]
-            print("{0}=df({1})".format(io.get_document_frequency(), word))
-            for tf, doc in index.tf_doc_of_object(word):
-                print("\t{0} {1}".format(tf, doc))
-    else:
-        print("List avoided because doc count > 10")
+    # if doc_count <= 10 or options.index:
+    #     for word in sorted(index.objects):
+    #         io = index.objects[word]
+    #         print("{0}=df({1})".format(io.get_document_frequency(), word))
+    #         for tf, doc in index.tf_doc_of_object(word):
+    #             print("\t{0} {1}".format(tf, doc))
+    # else:
+    #     print("List avoided because doc count > 10")
 
     # (P4) Enter in query mode
     if options.query:

@@ -41,7 +41,61 @@ def supply_files(file_names: List[str]) -> Generator[str, None, None]:
         else:
             yield file_name
 
+def getXmlTextSubSections(dataDirectory):
+    _xmlDocs = os.listdir("{}".format(dataDirectory[0]))    
+    # ./Practice_05_data/XML-Coll-withSem/
+    for _xmlDoc in _xmlDocs :
+        _docno= _xmlDoc.split(".")[0]
+        
+        _f=open("{}{}".format(dataDirectory[0],_xmlDoc))
+        _str=_f.read()
+        _doc=BeautifulSoup(_str,features="lxml")
+        
+        try:
+            yield "{}/article[1]/header/title".format(_docno) , _doc.find("title").text
+        except :
+            pass
+        
+        try:
+            yield "{}/article[1]/header/id".format(_docno) , _doc.find("id").text
+        except :
+            pass
+        try:
+            yield "{}/article[1]/header/revision".format(_docno),_doc.find("revision").text
+        except :
+            pass
+        
+        try:
+            yield "{}/article[1]/header/categories".format(_docno),_doc.find("categories").text
+        except :
+            pass
+        
+        try:
+            yield "{}/article[1]/header/contributor".format(_docno),_doc.find("contributor").text
+           
+        except :
+            pass
+        
+        
 
+        try:
+            yield "{}/article[1]/header/timestamp".format(_docno),_doc.find("timestamp").text
+            
+        except :
+            pass
+        try:
+            yield "{}/article[1]/header/username".format(_docno),_doc.find("username").text
+         
+        except :
+            pass
+        
+        
+        
+        try:
+            yield "{}/article[1]/bdy".format(_docno),_doc.find("bdy").text
+        except :
+            pass
+        _f.close()
 
 def getXmlText(dataDirectory):
     _xmlDocs = os.listdir("{}".format(dataDirectory[0]))    
@@ -50,9 +104,10 @@ def getXmlText(dataDirectory):
         print("[Reading {} file]".format(_xmlDoc))
         _f=open("{}{}".format(dataDirectory[0],_xmlDoc))
         _f=_f.read()
-        _f=_f.replace("&","")
-        t = ET.fromstring(_f)
-        _xmlText=''.join(t.findall('.//header')[0].itertext())+''.join(t.findall('.//bdy')[0].itertext())
+        # _f=_f.replace("&","")
+        # t = ET.fromstring(_f)
+        # _xmlText=''.join(t.findall('.//header')[0].itertext())+''.join(t.findall('.//bdy')[0].itertext())
+        _xmlText=BeautifulSoup(_f,features="lxml").text
         _docno= _xmlDoc.split(".")
         yield  _docno[0],_xmlText.strip() 
          

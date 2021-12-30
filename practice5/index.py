@@ -76,14 +76,24 @@ class IndexObject:
         """
         for _doc in self.smart_ltn:
             if _doc in index.tmp_sum_ltc:
-                
-                self.smart_ltc.update({_doc:self.smart_ltn[_doc] / sqrt(index.tmp_sum_ltc[_doc])}) 
+
+                try:
+                    self.smart_ltc.update({_doc:self.smart_ltn[_doc] / sqrt(index.tmp_sum_ltc[_doc])}) 
+                except :
+                    pass
+                    self.smart_ltc.update({_doc:0}) 
 
 class RankedRetrivialAnswer:
-    def __init__(self, wtdsum: float, doc: str):
+    def __init__(self, wtdsum: float=None, doc: str=None):
         self.wtdsum: float = wtdsum
         self.doc: str = doc
-
+        self.children : list= []
+        
+class RankedRetrivialAnswerParent:
+    def __init__(self ):
+        self.childrenStat : RankedRetrivialAnswer=None
+        self.parentScore=0
+ 
 
 class IndexStore:
     def __init__(self) :
@@ -95,6 +105,7 @@ class IndexStore:
         self.tmp_sum_ltc={}# {"word": sum}
         self.queryTermManager={}  # {"word": frequency}
         self.RSV={} # {"DocNum" : score}
+        self.RSVParentArticle={}
     def fetch_or_create_object(self, word: str) :
         """
         Fetch or create an index object for a certain word

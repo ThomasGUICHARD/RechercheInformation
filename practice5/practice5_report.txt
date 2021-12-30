@@ -58,49 +58,50 @@ List avoided because doc count > 10
 
 In practice 5 : 
 
-[36.680s] Computing algorithm bm25
-[39.557s] test ranked retrieval... 'web ranking scoring algorithm'
-- 23724 (5.65939982531809)
-- 18336216 (5.09776242281206)
-- 207747 (4.954895635722465)
-- 2086074 (4.847352620529916)
-- 6082436 (4.8191241925255985)
-- 15116785 (4.813554728927265)
-- 1803281 (4.7695691363302695)
-- 6415715 (4.6924543458277395)
-- 5018563 (4.609976995678734)
-- 10535584 (4.609206590519027)
-[39.564s] Computing algorithm ltc
-[44.974s] test ranked retrieval... 'web ranking scoring algorithm'
-- 2363262 (0.22722017707933181)
-- 10416781 (0.21563191668748363)
-- 8080270 (0.19761046439586166)
-- 5883652 (0.18282572496027727)
-- 18622152 (0.17681902173240757)
-- 18096221 (0.1747558444876372)
-- 12985913 (0.17222504925244203)
-- 9981737 (0.17133471812536627)
-- 17303714 (0.16997364811707716)
-- 5822019 (0.1665575775254566)
-[44.981s] Computing algorithm ltn
-[47.238s] test ranked retrieval... 'web ranking scoring algorithm'
-- 23724 (7.135747107160274)
-- 448834 (6.124470751067846)
-- 207747 (5.78132870225514)
-- 18336216 (5.704868200715063)
-- 2292623 (5.327011664210744)
-- 2606518 (5.248188732020951)
-- 6861556 (5.2274986305775375)
-- 18963457 (5.208373628551646)
-- 363695 (5.199827053694936)
-- 719095 (5.152116958466727)
-[47.245s] Completed...
+[192.291s] Computing algorithm bm25
+[195.000s] test ranked retrieval... 'web ranking scoring algorithm'
+- 23724 (5.634726130652663)
+- 18336216 (5.095484769423065)
+- 207747 (4.942545370424028)
+- 2086074 (4.841107909449207)
+- 6082436 (4.812367366292156)
+- 15116785 (4.806543029645615)
+- 1803281 (4.763078587747562)
+- 6415715 (4.683817939366872)
+- 5018563 (4.600371856389484)
+- 10535584 (4.59977465723493)
+[195.008s] Computing algorithm ltc
+[200.426s] test ranked retrieval... 'web ranking scoring algorithm'
+- 2363262 (0.22821703449782155)
+- 10416781 (0.21577124932001313)
+- 8080270 (0.19772759261807454)
+- 5883652 (0.18297200077257547)
+- 13771790 (0.181854009201064)
+- 18622152 (0.17705425010479214)
+- 18096221 (0.17518264609729334)
+- 12985913 (0.1723171058483223)
+- 9981737 (0.17139148060611561)
+- 17303714 (0.16997925816282922)
+[200.432s] Computing algorithm ltn
+[202.647s] test ranked retrieval... 'web ranking scoring algorithm'
+- 23724 (7.141656327540463)
+- 448834 (6.1319154683558805)
+- 207747 (5.787102104731488)
+- 18336216 (5.711877234262051)
+- 2292623 (5.3319841780721955)
+- 2606518 (5.253668029879702)
+- 6861556 (5.232976759738661)
+- 18963457 (5.212235028327158)
+- 363695 (5.202186389188097)
+- 719095 (5.159838424737482)
+[202.653s] Completed...
 
-Indexing time:   47.244568297s
+Indexing time:   202.652744216s
 Doc count:       9804 doc(s)
-Word count:      11907243 word(s)
-Vocabulary size: 290991 word(s)
+Word count:      11606770 word(s)
+Vocabulary size: 279637 word(s)
 List avoided because doc count > 10
+
 
 
 
@@ -110,14 +111,42 @@ List avoided because doc count > 10
 --> Approximatively the same weighting values for all documents 
 --> same doc count
 --> Approximatively same time processing
+--> Approximatively the same word and Vocabulary count
 
 ---- Difference -----
-
-                practice 5 , practice 4
-word count        11907243    11699504
-
-Vocabulary size   290991        277357
+time processing to index
 
 
-when we tested the xml conversion to string we had exactly the rigth expected results but we don't know why after processing all the documents
-we find this large difference in word & vocabulary count and 
+--------------- Stats when running Wilkinson methode------------
+
+─$ python3 main.py ./Practice_05_data/XML-Coll-withSem/ -r --ifile=./Practice_05_data/topics_M2DSC_7Q.txt --dfile=./runs/ -w   
+[0.000s] Starting...
+[167.137s] Removing stopwords...
+[167.141s] Completed...
+
+Indexing time:   167.14130086s
+Doc count:       78270 doc(s)
+Word count:      11692011 word(s)
+Vocabulary size: 279486 word(s)
+                                                                                                                                                                       
+└─$ python3 main.py ./Practice_05_data/XML-Coll-withSem/ -r --ifile=./Practice_05_data/topics_M2DSC_7Q.txt --dfile=./runs/ -s   
+[0.000s] Starting...
+[170.222s] Applying stemmer...
+[175.388s] Completed...
+
+Indexing time:   175.388492963s
+Doc count:       78270 doc(s)
+Word count:      11692011 word(s)
+Vocabulary size: 241356 word(s)
+
+                                                                                                                                                                       
+└─$ python3 main.py ./Practice_05_data/XML-Coll-withSem/ -r --ifile=./Practice_05_data/topics_M2DSC_7Q.txt --dfile=./runs/   
+[0.000s] Starting...
+[164.258s] Completed...
+
+Indexing time:   164.257638594s
+Doc count:       78270 doc(s)
+Word count:      11692011 word(s)
+Vocabulary size: 279637 word(s)
+
+
