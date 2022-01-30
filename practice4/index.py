@@ -56,7 +56,10 @@ class IndexObject:
 class RankedRetrivialAnswer:
     def __init__(self, wtdsum: float, doc: str) -> None:
         self.wtdsum: float = wtdsum
-        self.doc: str = doc
+        docno, path = doc.split(":")
+
+        self.doc = docno
+        self.path = path
 
 
 class IndexStore:

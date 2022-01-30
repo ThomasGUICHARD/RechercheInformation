@@ -5,3 +5,11 @@ output
 __pycache__/
 
 NassimAntoineThomasMelanie_*.txt
+
+.vscode/settings.json
+
+runs
+
+.venv
+
+

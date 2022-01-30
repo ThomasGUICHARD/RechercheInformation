@@ -4,6 +4,7 @@ from algorithms import Algorithms
 from index import porter_stemmer, stop_words, RankedRetrivialAnswer, IndexStore
 from timing import logger
 from itertools import islice
+from inex_utils import remove_overlapping, remove_interleaved
 
 # maximum line count per file
 MAX_LINES = 10_500
@@ -26,6 +27,14 @@ class Granularity(Enum):
     ARTICLE = "articles"
     ELEMENTS = "elements"
     PASSAGES = "passages"
+
+
+GRANULARITY_MAP = {}
+# article[1]/bdy[1]/sec[3]/p[3]
+GRANULARITY_MAP[Granularity.ARTICLE.value] = ["article"]
+GRANULARITY_MAP[Granularity.ELEMENTS.value] = ["article", "bdy", "sec"]
+GRANULARITY_MAP[Granularity.PASSAGES.value] = ["article", "bdy", "sec", "p"]
+GRANU_LIST = [granu.value for granu in Granularity]
 
 
 class Stop(Enum):
@@ -120,10 +129,15 @@ class RunResultProducer:
             logger.write(f"({i}) {qid} '{query}'")
 
             answers = index.compute_ranked_retrieval_as_list(query)
+            answers = remove_overlapping(answers)
+            answers = islice(answers, articles)
+            answers = remove_interleaved(answers)
+
             # parse answers
-            for rank, answer in enumerate(islice(answers, articles)):
+            for rank, answer in enumerate(answers):
                 results.append(RunResultLine(qid, answer.doc,
-                               rank, answer.wtdsum, self.team_name, "/article[1]"))
+                               rank, answer.wtdsum, self.team_name, answer.path))
+            logger.write(f"{rank} line(s) added")
 
         logger.write("Writing file...")
         logger.write("")
@@ -132,6 +146,7 @@ class RunResultProducer:
                 logger.write_no_endl(f"line {i}...")
                 result.write(f)
 
+        print("")
         logger.write(f"Completed {file_name}...")
 
         logger.end()
